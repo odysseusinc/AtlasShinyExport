@@ -12,3 +12,5 @@ The app can then be deployed on a shiny server.
 
 Cohort Counts app demo: https://ablack3.shinyapps.io/cohortCounts/
 
+Incidence Rate app demo: https://ablack3.shinyapps.io/IncidenceRate/
+
