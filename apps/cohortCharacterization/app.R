@@ -5,6 +5,7 @@ library(shiny)
 library(readr)
 library(reactable)
 
+
 csv_files <-
   list.files("data/synpuf5pct", pattern = ".csv", full.names = T)
 app_data <-
@@ -36,46 +37,29 @@ app_data <-
   ) %>%
   bind_rows()
 
-# ui <- fluidPage(
-#   titlePanel("Initial Example"),
-#   reactableOutput("table")
-# )
-
 ui <- navbarPage(
   title = div("Cohort Characterizations"),
-  tabPanel("Categorical Data",
-           reactableOutput(
-             "table_categorical"
-           )),
-  tabPanel("Continuous Data",
-           reactableOutput("table_continuous")),
-  fluid = TRUE
+  tabPanel("Categorical Data", reactableOutput("table_categorical")),
+  tabPanel("Continuous Data", reactableOutput("table_continuous"))
 )
 
-server <- function(input, output) {
-  output$table_categorical <- renderUI
-  ({
+server <- function(input, output, session) {
+  output$table_categorical <- renderReactable({
     reactable(
       app_data_categorical,
-      groupBy = c(
-        "Analysis name",
-        "Strata name",
-        "Cohort name",
-        "Covariate short name"
-      )
+      groupBy = c( "Analysis name", "Strata name", "Cohort name", "Covariate short name"),
+      columns = list(Percent = colDef(format = colFormat(digits = 1))),
+      borderless = TRUE
     )
   })
   
-  output$table_continuous <- renderUI
-  ({
+  output$table_continuous <- renderReactable({
     reactable(
       app_data_continuous,
-      groupBy = c(
-        "Analysis name",
-        "Strata name",
-        "Cohort name",
-        "Covariate short name"
-      )
+      groupBy = c("Analysis name", "Strata name", "Cohort name", "Covariate short name"),
+      columns = list(Avg = colDef(format = colFormat(digits = 1)),
+                     StdDev = colDef(format = colFormat(digits = 1))),
+      borderless = TRUE
     )
   })
 }
