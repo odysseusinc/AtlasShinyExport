@@ -58,7 +58,8 @@ server <- function(input, output, session) {
     reactable(
       app_data_categorical,
       columns = list(Percent = colDef(format = colFormat(digits = 1))),
-      defaultSorted = list(Percent = "desc")
+      defaultSorted = list(Percent = "desc"),
+      filterable = TRUE
     )
   })
   
@@ -68,7 +69,8 @@ server <- function(input, output, session) {
       columns = list(
         Avg = colDef(format = colFormat(digits = 1)),
         StdDev = colDef(format = colFormat(digits = 1))),
-      defaultSorted = list(Count = "desc", Avg = "desc")
+      defaultSorted = list(Count = "desc", Avg = "desc"),
+      filterable = TRUE
     )
   })
 }
