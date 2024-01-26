@@ -1,0 +1,3 @@
+"Analysis ID","Analysis name","Strata ID","Strata name","Cohort ID","Cohort name","Covariate ID","Covariate name","Covariate short name","Count","Percent"
+"74","DemographicsGender","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","8532001","gender = FEMALE"," FEMALE","121","60.19900497512438"
+"74","DemographicsGender","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","8507001","gender = MALE"," MALE","80","39.800995024875625"

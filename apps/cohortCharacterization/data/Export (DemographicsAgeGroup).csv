@@ -1,0 +1,8 @@
+"Analysis ID","Analysis name","Strata ID","Strata name","Cohort ID","Cohort name","Covariate ID","Covariate name","Covariate short name","Count","Percent"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","19003","age group:  95 -  99","  95 -  99","7","3.482587064676617"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","14003","age group:  70 -  74","  70 -  74","45","22.388059701492537"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","15003","age group:  75 -  79","  75 -  79","35","17.412935323383085"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","17003","age group:  85 -  89","  85 -  89","21","10.44776119402985"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","13003","age group:  65 -  69","  65 -  69","38","18.90547263681592"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","18003","age group:  90 -  94","  90 -  94","12","5.970149253731343"
+"71","DemographicsAgeGroup","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","16003","age group:  80 -  84","  80 -  84","42","20.8955223880597"
