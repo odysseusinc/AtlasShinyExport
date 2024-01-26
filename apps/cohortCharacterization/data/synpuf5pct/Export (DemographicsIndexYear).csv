@@ -1,7 +1,0 @@
-"Analysis ID","Analysis name","Strata ID","Strata name","Cohort ID","Cohort name","Covariate ID","Covariate name","Covariate short name","Count","Percent"
-"80","DemographicsIndexYear","0","All stratas","35","[demo] celecoxib new users","2010006","index year: 2010"," 2010","628","42.175957018132976"
-"80","DemographicsIndexYear","9","Age > 30","35","[demo] celecoxib new users","2009006","index year: 2009"," 2009","854","57.7807848443843"
-"80","DemographicsIndexYear","8","Male","35","[demo] celecoxib new users","2009006","index year: 2009"," 2009","332","58.14360770577933"
-"80","DemographicsIndexYear","0","All stratas","35","[demo] celecoxib new users","2009006","index year: 2009"," 2009","861","57.82404298186703"
-"80","DemographicsIndexYear","8","Male","35","[demo] celecoxib new users","2010006","index year: 2010"," 2010","239","41.85639229422067"
-"80","DemographicsIndexYear","9","Age > 30","35","[demo] celecoxib new users","2010006","index year: 2010"," 2010","624","42.2192151556157"

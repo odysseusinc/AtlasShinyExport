@@ -1,0 +1,2 @@
+"Analysis ID","Analysis name","Strata ID","Strata name","Cohort ID","Cohort name","Covariate ID","Covariate name","Covariate short name","Value field","Missing Means Zero","Count","Avg","StdDev","Min","P10","P25","Median","P75","P90","Max"
+"77","DemographicsAge","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","1002","age in years","age in years",,"false","201","77.82089552238806","8.10911593171721","65.0","68.0","71.0","76.0","83.0","89.0","100.0"

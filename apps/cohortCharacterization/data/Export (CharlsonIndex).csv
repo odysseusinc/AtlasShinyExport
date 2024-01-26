@@ -1,0 +1,2 @@
+"Analysis ID","Analysis name","Strata ID","Strata name","Cohort ID","Cohort name","Covariate ID","Covariate name","Covariate short name","Value field","Missing Means Zero","Count","Avg","StdDev","Min","P10","P25","Median","P75","P90","Max"
+"49","CharlsonIndex","0","All stratas","1770328","Graham replication:  warfarin new users with prior atrial fibrillation","1901","Charlson index - Romano adaptation","Charlson index - Romano adaptation",,"false","200","11.82587064676617","5.177432184017527","0.0","5.0","8.0","11.0","15.0","19.0","27.0"

@@ -1,7 +1,0 @@
-"Analysis ID","Analysis name","Strata ID","Strata name","Cohort ID","Cohort name","Covariate ID","Covariate name","Covariate short name","Count","Percent"
-"72","DemographicsRace","0","All stratas","35","[demo] celecoxib new users","8527004","race = White"," White","1175","78.91202149093351"
-"72","DemographicsRace","9","Age > 30","35","[demo] celecoxib new users","8527004","race = White"," White","1165","78.82273342354533"
-"72","DemographicsRace","9","Age > 30","35","[demo] celecoxib new users","8516004","race = Black or African American"," Black or African American","192","12.990527740189444"
-"72","DemographicsRace","8","Male","35","[demo] celecoxib new users","8516004","race = Black or African American"," Black or African American","66","11.558669001751314"
-"72","DemographicsRace","8","Male","35","[demo] celecoxib new users","8527004","race = White"," White","449","78.6339754816112"
-"72","DemographicsRace","0","All stratas","35","[demo] celecoxib new users","8516004","race = Black or African American"," Black or African American","193","12.961719274680995"
