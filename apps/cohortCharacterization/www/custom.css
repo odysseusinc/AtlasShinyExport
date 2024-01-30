@@ -1,0 +1,11 @@
+.main-header .logo {
+  text-align: left;
+}
+.container-fluid {
+  height: 700;
+}
+
+.navbar-nav{
+  width: 600px;
+  vertical-align: left;
+}
