@@ -1,5 +1,6 @@
 library(dplyr)
 library(st)
+library(ggplot2)
 
 csv_files <-
   list.files("data", pattern = ".csv", full.names = T)
@@ -30,10 +31,42 @@ app_data <-
 empty_columns <- lapply(seq_len(length(app_data)), function(x) colSums(is.na(app_data[[x]]) | app_data[[x]] == "") == nrow(is.na(app_data[[x]]))) # Delete all empty columns
 
 app_data <- lapply(seq_len(length(app_data)), function(x) app_data[[x]] %>% purrr::discard(empty_columns[[x]]))
-  
-  
-# z <- lapply(paste0("table ", seq_len(length(app_data))),
-#             function(x) {
-#               print(x)
-#               print(paste0("plot ", x))
-#             })
+
+app_data <- lapply(seq_len(length(app_data)), function(x) if (!is.null(app_data[[x]]$Avg)) {app_data[[x]] %>% mutate(`Boxplot` =  x) } else {app_data[[x]]}) # Insert plot columns where relevant
+
+# Graphs for the app
+
+output <- list()
+
+lapply(seq_len(length(app_data)), function(a) {
+  if (!is.null(app_data[[a]]$Avg)) {
+    output[[a]] <-
+      ggplot(app_data[[a]],
+             aes(x = `Analysis name`, fill = `Analysis name`)) +
+      geom_boxplot(aes(
+        ymin = Min,
+        lower = P10,
+        middle = Median,
+        upper = P90,
+        ymax = Max
+      ),
+      stat = "identity",
+      show.legend = FALSE) +
+      coord_flip() +
+      scale_fill_brewer(palette = "Blues") +
+      theme(
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+    
+    png(sprintf("www/p%s.png", a),
+        width = 100, height = 80)
+    plot(output[[a]])
+    dev.off()
+  }
+  else {
+    return()
+  }
+})
+
+
