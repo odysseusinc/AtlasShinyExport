@@ -36,11 +36,9 @@ app_data <- lapply(seq_len(length(app_data)), function(x) if (!is.null(app_data[
 
 # Graphs for the app
 
-output <- list()
-
 lapply(seq_len(length(app_data)), function(a) {
   if (!is.null(app_data[[a]]$Avg)) {
-    output[[a]] <-
+    output <-
       ggplot(app_data[[a]],
              aes(x = `Analysis name`, fill = `Analysis name`)) +
       geom_boxplot(aes(
@@ -61,7 +59,7 @@ lapply(seq_len(length(app_data)), function(a) {
     
     png(sprintf("www/p%s.png", a),
         width = 100, height = 80)
-    plot(output[[a]])
+    plot(output)
     dev.off()
   }
   else {
@@ -70,3 +68,19 @@ lapply(seq_len(length(app_data)), function(a) {
 })
 
 
+comparatorCohort <- list()
+targetCohort <- list()
+
+# print(!is.null(app_data[[10]]$`Comparator cohort name`))
+
+# Not working the code below
+for(a in 1:length(app_data)) {
+  if (!is.null(app_data[[a]]$`Comparator cohort name`)) {
+    comparatorCohort[[a]] <- app_data[[a]]
+    }
+  else {
+    targetCohort[[a]] <- app_data[[a]]
+  }
+}
+
+comparatorCohort <- Filter(Negate(is.null), comparatorCohort) # Filter nulls from list
