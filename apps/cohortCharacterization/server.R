@@ -1,76 +1,93 @@
 library(shiny)
 library(dplyr)
 library(reactable)
-library(ggplot2)
-library(htmltools)
 library(dplyr)
-library(st)
-library(bit64)
 source("dataPrep.R")
 
-server <- function(input, output) {
-  output$mytabs <- renderUI({
-    thetabs <- lapply(paste0("table ", seq_len(length(app_data))),
-                      function(x) {
-                        tabPanel(x, reactableOutput(x))
-                      })
-    do.call(tabsetPanel, thetabs)
+
+server <- function(input, output, session) {
+  cohort <- reactive({
+    input$cohort
   })
   
-  output$myplots <- renderUI({
-    thetabs1 <- lapply(paste0("plot ", seq_len(length(app_data))),
-                       function(x) {
-                         if (!is.null(app_data[[a]]$Avg)) {
-                           tabPanel(x, plotOutput(x))
-                         }
-                         else{
-                           return()
-                         }
-                       })
-    do.call(tabsetPanel1, thetabs1)
+  dataSet <- eventReactive(input$Submit, {
+    if (cohort() == "targetCohort") {
+      return(targetCohort)
+    }
+    else {
+      return(comparatorCohort)
+    }
   })
   
-  observe({
-    lapply(seq_len(length(app_data)), function(a) {
-      if (is.null(app_data[[a]]$Avg)) {
-        output[[paste0("table ", a)]] <-
-          renderReactable({
-            reactable(
-              app_data[[a]],
+  # cohort <- reactive({
+  #   cohort <- input$cohort})
+  #
+  # if (reactive({cohort() == "targetCohort"})) {
+  #   dataSet <- targetCohort
+  # }
+  # else {
+  #   dataSet <- comparatorCohort
+  # }
+  
+  ### Start Debugging Code.
+  
+  output$oid2 <- renderPrint({
+    if (cohort() == "tagetCohort") {
+      paste("You entered: ", cohort())
+    } else {
+      paste("You entered: ", cohort())
+    }
+  })
+  
+  ### End Debugging Code.
+  
+  dataList = list()
+  
+  renderedDataList <-
+    renderReactable({for(a in 1:length(dataSet())) {
+          if (is.null(dataSet()[[a]]$Avg)) {
+            dataList[[paste0("table ", a)]] <-
+              reactable(dataSet()[[a]],
               sortable = TRUE,
               showSortable = TRUE,
-              defaultSortOrder = "desc",
-              defaultSorted = "Percent",
               theme = reactableTheme(color = "hsl(0, 0%, 0%)"),
               showPageSizeOptions = TRUE,
               pageSizeOptions = c(10, 15, 20),
               defaultPageSize = 15,
-              style = list(maxWidth = 1600, maxHeight = 920))
-          })}
-      else {
-        output[[paste0("table ", a)]] <-
-          renderReactable({
-            reactable(
-              app_data[[a]],
+              style = list(maxWidth = 1600, maxHeight = 900)
+            )
+          }
+          else {
+            dataList[[paste0("table ", a)]] <-
+              reactable(dataSet()[[a]],
               sortable = TRUE,
               showSortable = FALSE,
               theme = reactableTheme(color = "hsl(0, 0%, 0%)"),
               showPageSizeOptions = TRUE,
               pageSizeOptions = c(10, 15, 20),
               defaultPageSize = 15,
-              style = list(maxWidth = 1600, maxHeight = 800),
-              columns = list(
-                Boxplot = colDef(cell = function(a) {
-                  div(
-                    class = "plot",
-                    img(src = sprintf("p%s.png", a))
-                  )},
-                  width = 120,
-                  align = "center")))
-          })
-      }
+              style = list(maxWidth = 1600, maxHeight = 900),
+              columns = list(Boxplot = colDef(
+                cell = function(a) {
+                  div(class = "plot",
+                      img(src = sprintf("p%s.png", a)))
+                },
+                width = 120,
+                align = "center"
+              ))
+            )
+          }
+        }
     })
-  })
-}
 
-#class = "box-plot", alt = paste0("p", a),
+# nameList <-
+#   lapply(seq_len(length(renderedDataList())), function(a) {
+#     paste0("table ", a)
+#   })
+
+output$tables <- renderUI({
+  lapply(seq_len(length(renderedDataList())), function(a) {
+    reactableOutput(paste0("table ", a))
+  })
+})
+}
