@@ -5,7 +5,7 @@ account: laac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10966645
-bundleId: 8204639
+bundleId: 8227678
 url: https://laac.shinyapps.io/cohortCharacterization/
 version: 1
 asMultiple: FALSE
