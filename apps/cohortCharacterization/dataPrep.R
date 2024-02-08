@@ -86,21 +86,26 @@ lapply(seq_len(length(app_data)), function(a) {
           lower = P10,
           middle = Median,
           upper = P90,
-          ymax = Max
+          ymax = Max,
         ),
+        alpha = 0,
+        colour = "#0c439c",
         stat = "identity",
         show.legend = FALSE
       ) +
       coord_flip() +
-      scale_fill_brewer(palette = "Blues") +
+      # scale_color_brewer(palette="Blues") +
       theme(
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        axis.ticks = element_blank()
+        axis.ticks = element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank()
       )
     
     png(sprintf("www/p%s.png", a),
-        width = 100,
+        width = 180,
         height = 80)
     plot(output)
     dev.off()
@@ -125,3 +130,49 @@ for (a in 1:length(app_data)) {
 
 comparatorCohort <-
   Filter(Negate(is.null), comparatorCohort) # Filter nulls from list
+
+inputFilesNames <- list(csv_files)
+inputFilesNames <-
+  lapply(inputFilesNames, function(x) {
+    sub('^data/Export ', '', x)
+  }) # eliminating data/Export from the beggining
+inputFilesNames <-
+  lapply(inputFilesNames, function(x) {
+    sub('.csv$', '', x)
+  }) # eliminating .csv from the end
+inputFilesNames <-
+  lapply(inputFilesNames, function(x) {
+    gsub('[()]', '', x, perl = TRUE)
+  }) # eliminating parentheses
+inputFilesNames <-
+  lapply(inputFilesNames, function(x) {
+    gsub('([a-z])([A-Z])', '\\1 \\2', x, perl = TRUE)
+  }) # Adding spaces between words
+inputFilesNames <-
+  lapply(inputFilesNames, function(x) {
+    tolower(x)
+  }) # Everything lower case
+inputFilesNames <-
+  lapply(inputFilesNames, function(x) {
+    stringr::str_to_sentence(x)
+  }) # First letter in upper case
+
+targetListNames <- list()
+comparatorListNames <- list()
+
+for (x in 1:(length(inputFilesNames[[1]]) / 2))
+{
+  targetListNames[[x]] <- inputFilesNames[[1]][x]
+}
+
+for (y in ((length(inputFilesNames[[1]]) / 2) + 1):(length(inputFilesNames[[1]])))
+{
+  {
+    comparatorListNames[[y]] <- inputFilesNames[[1]][y]
+  }
+}
+
+comparatorListNames <-
+  Filter(Negate(is.null), comparatorListNames) # Eliminates NULL
+
+# use this as condition for Analysis input selector: length(unique(targetCohort[[1]]$`Analysis name`))
