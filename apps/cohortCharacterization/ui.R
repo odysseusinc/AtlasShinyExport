@@ -14,7 +14,7 @@ ui <- fluidPage(
       inputId = "cohort",
       label = h3("Cohort"),
       choices = c("Target cohort" = "targetCohort",
-                  "Comparator cohort" = "comparatorCohort"),
+                  "Compare target vs comparator cohort" = "comparatorCohort"),
       selected = "Target cohort"
     )
   )),

@@ -17,6 +17,8 @@ server <- function(input, output, session) {
             targetCohort[[x]],
             sortable = TRUE,
             showSortable = FALSE,
+            highlight = TRUE,
+            searchable = TRUE,
             theme = reactableTheme(color = "hsl(0, 0%, 0%)"),
             showPageSizeOptions = TRUE,
             pageSizeOptions = c(10, 15, 20),
@@ -28,7 +30,7 @@ server <- function(input, output, session) {
                   div(class = "plot",
                       img(src = sprintf("p%s.png", a)))
                 },
-                width = 120,
+                width = 190,
                 align = "center"
               )
             )
@@ -40,6 +42,8 @@ server <- function(input, output, session) {
             targetCohort[[x]],
             sortable = TRUE,
             showSortable = TRUE,
+            highlight = TRUE,
+            searchable = TRUE,
             theme = reactableTheme(color = "hsl(0, 0%, 0%)"),
             showPageSizeOptions = TRUE,
             pageSizeOptions = c(10, 15, 20),
@@ -55,6 +59,8 @@ server <- function(input, output, session) {
           comparatorCohort[[x]],
           sortable = TRUE,
           showSortable = TRUE,
+          highlight = TRUE,
+          searchable = TRUE,
           theme = reactableTheme(color = "hsl(0, 0%, 0%)"),
           showPageSizeOptions = TRUE,
           pageSizeOptions = c(10, 15, 20),
