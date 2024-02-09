@@ -14,4 +14,4 @@ Cohort Counts app demo: https://ablack3.shinyapps.io/cohortCounts/
 
 Incidence Rate app demo: https://ablack3.shinyapps.io/IncidenceRate/
 
-Cohort Caracterization app demo: https://laac.shinyapps.io/cohortCharacterization/
+Cohort Caracterization app demo (in draft): https://laac.shinyapps.io/cohortCharacterization/

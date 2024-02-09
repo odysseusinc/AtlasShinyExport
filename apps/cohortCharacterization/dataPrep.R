@@ -2,7 +2,6 @@ library(dplyr)
 library(st)
 library(ggplot2)
 
-
 csv_files <-
   list.files("data", pattern = ".csv", full.names = T)
 
@@ -159,6 +158,12 @@ inputFilesNames <-
 
 targetListNames <- list()
 comparatorListNames <- list()
+inputListNames <- list()
+
+for (x in 1:(length(inputFilesNames[[1]])))
+{
+  inputListNames[[x]] <- inputFilesNames[[1]][x]
+}
 
 for (x in 1:(length(inputFilesNames[[1]]) / 2))
 {
@@ -167,12 +172,18 @@ for (x in 1:(length(inputFilesNames[[1]]) / 2))
 
 for (y in ((length(inputFilesNames[[1]]) / 2) + 1):(length(inputFilesNames[[1]])))
 {
-  {
-    comparatorListNames[[y]] <- inputFilesNames[[1]][y]
-  }
+  comparatorListNames[[y]] <- inputFilesNames[[1]][y]
 }
 
 comparatorListNames <-
   Filter(Negate(is.null), comparatorListNames) # Eliminates NULL
 
+cohortNames <- list("targetCohort" = targetListNames, "comparatorCohort" = comparatorListNames)
+
 # use this as condition for Analysis input selector: length(unique(targetCohort[[1]]$`Analysis name`))
+
+
+# ll <- list(1:4, 5:6, 7:12, 1:12)
+# ll <- lapply(ll, as.character)
+# 
+# which(sapply(cohortNames$targetCohort, FUN=function(X) "Condition group era any time prior" %in% X))
