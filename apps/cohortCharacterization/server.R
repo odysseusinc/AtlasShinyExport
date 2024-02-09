@@ -3,18 +3,55 @@ library(reactable)
 source("dataPrep.R")
 
 
+
 server <- function(input, output, session) {
-  T1 <- list()
-  T2 <- list()
+#  T1 <- list()
+#  T2 <- list()
+  
+  output$secondSelect <- renderUI({
+    if (input$cohort == names(cohortNames)[1])
+    {
+      pickerInput(
+        inputId = "analysis",
+        label = h4("Analysis name"),
+        choices = cohortNames$targetCohort,
+        selected = "All prevalence covariates"
+      )
+    }
+    else
+    {
+      pickerInput(
+        inputId = "analysis",
+        label = h4("Analysis name"),
+        choices = cohortNames$comparatorCohort,
+        selected = "Comparison all prevalence covariates"
+      )
+    }
+  })
+  
+  
+  analysisName <- reactive({if (input$cohort == names(cohortNames)[1]) # imput cohort == targetCohort
+  {
+     return(input$analysis)
+  }
+  else
+  {
+    return(input$analysis)
+  }
+  })
   
   
   output$tables <- renderUI({
+    
+    resultInputAnalisys <- analysisName() 
+    
     if (input$cohort == "targetCohort")
     {
-      lapply(seq_len(length(targetCohort)), function(x) {
-        if (!is.null(targetCohort[[x]]$Avg)) {
-          T1[[x]] <- reactable(
-            targetCohort[[x]],
+      a <- which(sapply(cohortNames$targetCohort, FUN=function(X) resultInputAnalisys %in% X))
+#      lapply(seq_len(length(targetCohort)), function(x) {
+        if (!is.null(targetCohort[[a]]$Avg)) {
+          T1 <- reactable(
+            targetCohort[[a]],
             sortable = TRUE,
             showSortable = FALSE,
             highlight = TRUE,
@@ -30,7 +67,7 @@ server <- function(input, output, session) {
                   div(class = "plot",
                       img(src = sprintf("p%s.png", a)))
                 },
-                width = 190,
+                width = 200,
                 align = "center"
               )
             )
@@ -38,8 +75,8 @@ server <- function(input, output, session) {
         }
         else
         {
-          T1[[x]] <- reactable(
-            targetCohort[[x]],
+          T1 <- reactable(
+            targetCohort[[a]],
             sortable = TRUE,
             showSortable = TRUE,
             highlight = TRUE,
@@ -51,12 +88,13 @@ server <- function(input, output, session) {
             style = list(maxWidth = 1600, maxHeight = 900)
           )
         }
-      })
+#      })
     }
     else {
-      lapply(seq_len(length(targetCohort)), function(x) {
-        T2[[x]] <- reactable(
-          comparatorCohort[[x]],
+#      lapply(seq_len(length(targetCohort)), function(x) {
+      b <- which(sapply(cohortNames$comparatorCohort, FUN=function(X) resultInputAnalisys %in% X))
+        T2 <- reactable(
+          comparatorCohort[[b]],
           sortable = TRUE,
           showSortable = TRUE,
           highlight = TRUE,
@@ -67,7 +105,7 @@ server <- function(input, output, session) {
           defaultPageSize = 15,
           style = list(maxWidth = 1600, maxHeight = 900)
         )
-      })
+#      })
     }
   })
 }
