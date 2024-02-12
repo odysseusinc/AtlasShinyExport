@@ -22,6 +22,8 @@ ui <- fluidPage(
     uiOutput("secondSelect")
   )),
   
+  # fluidRow(column(12, textOutput("test"))),
+  
   fluidRow(column(12, uiOutput("tables"))),
   
   tags$style(type="text/css",
