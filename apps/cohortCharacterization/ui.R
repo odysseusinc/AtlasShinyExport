@@ -1,9 +1,3 @@
-library(shiny)
-library(htmltools)
-library(shinythemes)
-library(shinyWidgets)
-
-
 ui <- fluidPage(
   theme = shinytheme("cerulean"),
   titlePanel("Cohort Charterizations"),
@@ -21,6 +15,8 @@ ui <- fluidPage(
     3,
     uiOutput("secondSelect")
   )),
+  
+  # fluidRow(column(12, textOutput("test"))),
   
   fluidRow(column(12, uiOutput("tables"))),
   
