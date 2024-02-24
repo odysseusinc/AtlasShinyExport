@@ -1,7 +1,3 @@
-library(shiny)
-library(reactable)
-
-
 server <- function(input, output, session) {
 T1 <- list()
 T2 <- list()
@@ -9,7 +5,7 @@ T2 <- list()
 # s <- list()
   
   output$secondSelect <- renderUI({
-    if (input$cohort == names(cohortNames)[1])
+    if (input$cohort == names(cohortNames)[[1]])
     {
       pickerInput(
         inputId = "analysis",
@@ -69,22 +65,14 @@ T2 <- list()
     list_of_inputs <<- reactiveValuesToList(
       input)
     print(list_of_inputs)
-    cat("input$analysis: ", input$analysis1,"\n")
+    cat("input$analysis: ", input$analysis,"\n")
   })
   
   isolate(input)
 
   # output$test <- renderText(input$analysis)
   
-  analysisName <- reactive({if (input$cohort == names(cohortNames)[1]) # imput cohort == targetCohort
-  { 
-     return(input$analysis)
-  }
-  else
-  {
-    return(input$analysis)
-  }
-  })
+  analysisName <- reactive({return(input$analysis)})
   
   
   # output$test <- renderText(which(for(x in unlist(targetListNames)) {
@@ -101,12 +89,12 @@ T2 <- list()
   # targetListNames$'1'
   # "All prevalence covariates" %in% targetListNames
   
-  l <- reactive({length(sapply(cohortNames$targetCohort, FUN=function(X) analysisName() %in% X)[,1])})
-  a <- reactive({sapply(cohortNames$targetCohort, FUN=function(X) analysisName() %in% X)})
+  l <- reactive({length(sapply(cohortNames$targetCohort, FUN=function(X) input$analysis %in% X)[,1])})
+  a <- reactive({sapply(cohortNames$targetCohort, FUN=function(X) input$analysis %in% X)})
   r <- reactive({lapply(seq_len(l()), function(x) {which(a()[x,])})})
   
-  m <- reactive({length(sapply(cohortNames$comparatorCohort, FUN=function(X) analysisName() %in% X)[,1])})
-  b <- reactive({sapply(cohortNames$comparatorCohort, FUN=function(X) analysisName() %in% X)})
+  m <- reactive({length(sapply(cohortNames$comparatorCohort, FUN=function(X) input$analysis %in% X)[,1])})
+  b <- reactive({sapply(cohortNames$comparatorCohort, FUN=function(X) input$analysis %in% X)})
   s <- reactive({lapply(seq_len(m()), function(x) {which(b()[x,])})})
   
   
@@ -120,6 +108,9 @@ T2 <- list()
     {
       lapply(seq_len(l()), function(x) {
         if (!is.null(targetCohort[[r()[[x]]]]$Avg)) {
+          tags$div(class="header", checked=NA,
+          tags$h4(cohortNames$targetCohort[[r()[[x]]]]),
+          tags$hr(),
           T1[[x]] <- reactable(
             targetCohort[[r()[[x]]]],
             sortable = TRUE,
@@ -142,9 +133,13 @@ T2 <- list()
               )
             )
           )
+          )
         }
         else
         {
+          tags$div(class="header", checked=NA,
+          tags$h4(cohortNames$targetCohort[[r()[[x]]]]),
+          tags$hr(),
           T1[[x]] <- reactable(
             targetCohort[[r()[[x]]]],
             sortable = TRUE,
@@ -157,11 +152,15 @@ T2 <- list()
             defaultPageSize = 15,
             style = list(maxWidth = 1600, maxHeight = 900)
           )
+          )
         }
       })
     }
     else {
       lapply(seq_len(l()), function(x) {
+        tags$div(class="header", checked=NA,
+        tags$h4(cohortNames$comparatorCohort[[s()[[x]]]]),
+        tags$hr(),
         T2[[x]] <- reactable(
           comparatorCohort[[s()[[x]]]],
           sortable = TRUE,
@@ -173,6 +172,7 @@ T2 <- list()
           pageSizeOptions = c(10, 15, 20),
           defaultPageSize = 15,
           style = list(maxWidth = 1600, maxHeight = 900)
+        )
         )
      })
     }

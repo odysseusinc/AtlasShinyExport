@@ -1,3 +1,8 @@
+library(shiny)
+library(htmltools)
+library(shinythemes)
+library(shinyWidgets)
+library(reactable)
 library(dplyr)
 library(st)
 library(ggplot2)
@@ -179,6 +184,8 @@ comparatorListNames <-
   Filter(Negate(is.null), comparatorListNames) # Eliminates NULL
 
 cohortNames <- list("targetCohort" = targetListNames, "comparatorCohort" = comparatorListNames)
+
+# blue_pal <- function(x) rgb(colorRamp(c("#3b5b8f", "#022f78"))(x), maxColorValue = 255)
 
 # use this as condition for Analysis input selector: length(unique(targetCohort[[1]]$`Analysis name`))
 

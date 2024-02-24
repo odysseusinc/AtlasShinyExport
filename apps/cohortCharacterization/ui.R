@@ -1,9 +1,3 @@
-library(shiny)
-library(htmltools)
-library(shinythemes)
-library(shinyWidgets)
-
-
 ui <- fluidPage(
   theme = shinytheme("cerulean"),
   titlePanel("Cohort Charterizations"),
