@@ -103,14 +103,16 @@ lapply(seq_len(length(app_data)), function(a) {
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks = element_blank(),
-        panel.grid.major = element_blank(), 
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        panel.background = element_blank()
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA) #transparent plot bg
       )
     
     png(sprintf("www/p%s.png", a),
-        width = 180,
-        height = 80)
+        width = 170,
+        height = 130,
+        bg = "transparent")
     plot(output)
     dev.off()
   }
@@ -183,14 +185,5 @@ for (y in ((length(inputFilesNames[[1]]) / 2) + 1):(length(inputFilesNames[[1]])
 comparatorListNames <-
   Filter(Negate(is.null), comparatorListNames) # Eliminates NULL
 
-cohortNames <- list("targetCohort" = targetListNames, "comparatorCohort" = comparatorListNames)
-
-# blue_pal <- function(x) rgb(colorRamp(c("#3b5b8f", "#022f78"))(x), maxColorValue = 255)
-
-# use this as condition for Analysis input selector: length(unique(targetCohort[[1]]$`Analysis name`))
-
-
-# ll <- list(1:4, 5:6, 7:12, 1:12)
-# ll <- lapply(ll, as.character)
-# 
-# which(sapply(cohortNames$targetCohort, FUN=function(X) "Condition group era any time prior" %in% X))
+cohortNames <-
+  list("targetCohort" = targetListNames, "comparatorCohort" = comparatorListNames)

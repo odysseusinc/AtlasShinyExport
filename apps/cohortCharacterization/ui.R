@@ -7,21 +7,26 @@ ui <- fluidPage(
     pickerInput(
       inputId = "cohort",
       label = h4("Cohort name"),
-      choices = c("Target cohort" = "targetCohort",
-                  "Compare target vs comparator cohort" = "comparatorCohort"),
-      selected = "Target cohort"),
+      choices = c(
+        "Target cohort" = "targetCohort",
+        "Compare target vs comparator cohort" = "comparatorCohort"
+      ),
+      selected = "Target cohort"
+    ),
   ),
-  column(
-    3,
-    uiOutput("secondSelect")
-  )),
+  column(3,
+         uiOutput("secondSelect"))),
   
   # fluidRow(column(12, textOutput("test"))),
   
   fluidRow(column(12, uiOutput("tables"))),
   
-  tags$style(type="text/css",
-             ".shiny-output-error { visibility: hidden; }",
-             ".shiny-output-error:before { visibility: hidden; }"
+  tags$style(
+    type = "text/css",
+    ".shiny-output-error { visibility: hidden; }",
+    ".shiny-output-error:before { visibility: hidden; }"
   ),
+  # tags$head(
+  #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+  # )
 )

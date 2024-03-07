@@ -9,3 +9,7 @@
   width: 600px;
   vertical-align: left;
 }
+
+.header .display .inline-block{
+  text-align:right;
+}
