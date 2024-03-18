@@ -5,7 +5,7 @@ account: laac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11513991
-bundleId: 8383229
+bundleId: 8383285
 url: https://laac.shinyapps.io/IncidenceRate/
 version: 1
 asMultiple: FALSE

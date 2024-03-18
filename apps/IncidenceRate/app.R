@@ -35,11 +35,12 @@ ui <- fluidPage(
     theme = bs_theme(bootswatch = "cerulean"),
     title = "Incidence Rate Analysis",
     sidebar = sidebar(
-      selectInput("datasource", "Data Source", choices = data_sources),
-      selectInput("target_id", "Target Cohorts", target_cohorts),
+      selectInput("datasource", "Data source", choices = data_sources, 
+                  selected = "SYNPUF5PCT"),
+      selectInput("target_id", "Target cohorts", target_cohorts),
       selectInput(
         "outcome_id",
-        "Outcome Cohorts",
+        "Outcome cohorts",
         outcome_cohorts,
         selectize = F,
         width = "150px"
