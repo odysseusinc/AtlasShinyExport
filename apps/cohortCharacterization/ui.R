@@ -2,6 +2,8 @@ ui <- fluidPage(
   theme = shinytheme("cerulean"),
   titlePanel("Cohort Charterizations"),
   
+  tags$a(atlas_link, href = atlas_link, target = "_blank"),
+  
   fluidRow(column(
     3,
     pickerInput(
