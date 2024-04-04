@@ -29,31 +29,39 @@ data_sources <- list.files("data", pattern = ".json$") %>%
   stringr::str_subset("^cohorts.$", negate = T) %>%
   stringr::str_unique()
 
+# theme <- bs_theme()
+
 ui <- fluidPage(
   shinyjs::useShinyjs(),
-  page_sidebar(
-    theme = bs_theme(bootswatch = "cerulean"),
+  bslib::page_navbar(
+    theme = bslib::bs_theme("navbar-bg" = "#005480",
+                            fg="black",
+                            bg="white"),
     title = "Incidence Rate Analysis",
     sidebar = sidebar(
-      selectInput("datasource", "Data source", choices = data_sources, 
-                  selected = "SYNPUF5PCT"),
+      selectInput(
+        "datasource",
+        "Data source",
+        choices = data_sources,
+        selected = "SYNPUF5PCT"
+      ),
       selectInput("target_id", "Target cohorts", target_cohorts),
       selectInput(
         "outcome_id",
         "Outcome cohorts",
         outcome_cohorts,
-        selectize = F,
-        width = "150px"
+        # selectize = F,
+        # width = "150px"
       )
     ),
     card(
-      tags$a(atlas_link, href = atlas_link, target="_blank"),
-      tags$br(),
+      tags$a(atlas_link, href = atlas_link, target = "_blank"),
+      tags$h5("Summary Statistics for the Cohort"),
       reactableOutput("summary_table"),
       tags$br(),
       tags$br(),
       tags$br(),
-      tags$br(),
+      tags$h5("Summary Statistics for Strata within the Cohort"),
       reactableOutput("subgroup_table"),
       htmlOutput("selected_subset_text"),
       echarts4rOutput('treemap')
@@ -95,7 +103,8 @@ server <- function(input, output) {
       ) %>%
       nrow()
     
-    n_critera_passed <- length(stringr::str_split(x$subset_ids, ",")[[1]])
+    n_critera_passed <-
+      length(stringr::str_split(x$subset_ids, ",")[[1]])
     n_critera_failed <- n_criteria - n_critera_passed
     
     glue::glue(
@@ -142,10 +151,14 @@ server <- function(input, output) {
   
   output$subgroup_table <- renderReactable({
     style_function <- function(value, index) {
-      if (index %in% selected_subgroup_ids())
-        list(color = "black")
-      else
+      if (length(selected_subgroup_ids()) > 1 && index %in% selected_subgroup_ids())
         list(color = "red")
+      else if (length(selected_subgroup_ids()) == 1 && index %in% selected_subgroup_ids() && index == 1)
+        list(color = "red")
+      else if (length(selected_subgroup_ids()) == 1 && index %in% selected_subgroup_ids() && index == 2)
+        list(color = "red")
+      else
+        list(color = "black")
     }
     
     app_data$subgroup_table %>%
@@ -186,7 +199,7 @@ server <- function(input, output) {
         target == input$target_id,
         outcome == input$outcome_id
       ) %>%
-      select(-data_source, -target_id, -outcome_id) %>%
+      select(-data_source,-target_id,-outcome_id) %>%
       mutate(
         ids = stringr::str_replace(name, "None", "0") %>% stringr::str_split(",") %>% lapply(as.integer)
       )

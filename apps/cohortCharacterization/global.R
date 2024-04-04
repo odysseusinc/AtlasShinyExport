@@ -6,6 +6,7 @@ library(reactable)
 library(dplyr)
 library(st)
 library(ggplot2)
+library(bslib)
 
 csv_files <-
   list.files("data", pattern = ".csv", full.names = T)
@@ -187,3 +188,5 @@ comparatorListNames <-
 
 cohortNames <-
   list("targetCohort" = targetListNames, "comparatorCohort" = comparatorListNames)
+
+atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
