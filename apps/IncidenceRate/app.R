@@ -2,12 +2,15 @@ library(shiny)
 library(dplyr)
 library(echarts4r)
 library(reactable)
+library(htmltools)
+library(tippy)
 library(bslib)
 
 source("read_data.R")
 # cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
 app_data <- read_data(path = "data")
 atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
+repo_link <- readr::read_lines(file.path("data", "repo_link.txt"))
 
 cohorts <- readr::read_csv(file.path("data", "cohorts.csv"))
 
@@ -64,7 +67,8 @@ ui <- fluidPage(
       tags$h5("Summary Statistics for Strata within the Cohort"),
       reactableOutput("subgroup_table"),
       htmlOutput("selected_subset_text"),
-      echarts4rOutput('treemap')
+      echarts4rOutput('treemap'),
+      tags$a(repo_link, href = repo_link, target = "_blank")
     )
   )
   
@@ -136,7 +140,13 @@ server <- function(input, output) {
         `Time at risk \n(years)` = time_at_risk,
         `Rate \n(per 1k person-years)` = rate_per_1k_years
       ) %>%
-      reactable()
+      reactable(columns = list(
+        Persons = colDef(header = tippy("Persons", "Total number of persons in the cohort.", placement = "right")),
+        Cases = colDef(header = tippy("Cases", "Total number of persons that arrive to one the end point.", placement = "right")),
+        `Proportion \n(per 1k person-years)` = colDef(header = tippy("Proportion \n(per 1k person-years)", "Thousands of cases in a year divided by persons.", placement = "right")),
+        `Time at risk \n(years)` = colDef(header = tippy("Time at risk \n(years)", "Estimated anount of time a person is at risk to arriving to the end point.", placement = "right")),
+        `Rate \n(per 1k person-years)` = colDef(header = tippy("Rate \n(per 1k person-years)", "Thousands of cases in a year divided by time at risk.", placement = "right"))
+      ))
   })
   
   # when a box on the treemap is clicked this reactive store the selected subgroup ids as a numeric vector
@@ -181,12 +191,12 @@ server <- function(input, output) {
       ) %>%
       reactable(
         columns = list(
-          "Stratify rule" = colDef(style = style_function),
-          "Persons" = colDef(style = style_function),
-          "Cases" = colDef(style = style_function),
-          "Proportion (per 1k person-years)" = colDef(style = style_function),
-          "Time at risk (years)" = colDef(style = style_function),
-          "Rate (per 1k person-years)" = colDef(style = style_function)
+          "Stratify rule" = colDef(header = tippy("Stratify rule", "Groups defined inside the cohort.", placement = "right"), style = style_function),
+          "Persons" = colDef(header = tippy("Persons", "Total number of persons in the cohort.", placement = "right"), style = style_function),
+          "Cases" = colDef(header = tippy("Cases", "Total number of persons that arrive to one the end point.", placement = "right"), style = style_function),
+          "Proportion (per 1k person-years)" = colDef(header = tippy("Proportion \n(per 1k person-years)", "Thousands of cases in a year divided by persons.", placement = "right"), style = style_function),
+          "Time at risk (years)" = colDef(header = tippy("Time at risk \n(years)", "Estimated anount of time a person is at risk to arriving to the end point.", placement = "right"), style = style_function),
+          "Rate (per 1k person-years)" = colDef(header = tippy("Rate \n(per 1k person-years)", "Thousands of cases in a year divided by time at risk.", placement = "right"), style = style_function)
         ),
         sortable = FALSE
       )
@@ -215,7 +225,7 @@ server <- function(input, output) {
         target == input$target_id,
         outcome == input$outcome_id
       ) %>%
-      select(name = subset_ids, value = rate_per_1k_years) %>%
+      select(name = subset_ids, value = cases) %>%
       e_charts() %>%
       e_treemap(roam = F) %>%
       e_toolbox_feature(feature = "saveAsImage") %>%
