@@ -1,6 +1,5 @@
 library(shiny)
 library(htmltools)
-library(shinythemes)
 library(shinyWidgets)
 library(reactable)
 library(dplyr)

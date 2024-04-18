@@ -3,29 +3,29 @@ server <- function(input, output, session) {
   T2 <- list()
   
   output$secondSelect <- renderUI({
-    if (input$cohort == names(cohortNames)[[1]])
-    {
       pickerInput(
         inputId = "analysis",
-        label = h4("Analysis name"),
-        choices = cohortNames$targetCohort,
-        selected = targetListNames,
+        label = "Analysis name",
+        choices = c(cohortNames$targetCohort),
+        selected = c(cohortNames$targetCohort),
         multiple = TRUE,
-        options = list(`actions-box` = TRUE)
+        options = pickerOptions(
+          actionsBox = TRUE
+        )
       )
-    }
-    else
-    {
+    })
+  output$thirdSelect <- renderUI({
       pickerInput(
         inputId = "analysis",
-        label = h4("Analysis name"),
-        choices = cohortNames$comparatorCohort,
-        selected = comparatorListNames,
+        label = "Analysis name",
+        choices = c(cohortNames$comparatorCohort),
+        selected = c(cohortNames$comparatorCohort),
         multiple = TRUE,
-        options = list(`actions-box` = TRUE)
+        options = pickerOptions(
+          actionsBox = TRUE
+        )
       )
-    }
-  })
+    })
   
   a <-
     reactive({

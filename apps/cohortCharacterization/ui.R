@@ -1,34 +1,49 @@
 ui <- fluidPage(
-  theme = shinytheme("cerulean"),
-  titlePanel("Cohort Charterizations"),
-  
-  tags$a(atlas_link, href = atlas_link, target = "_blank"),
-  
-  fluidRow(column(
-    3,
-    pickerInput(
-      inputId = "cohort",
-      label = h4("Cohort name"),
-      choices = c(
-        "Target cohort" = "targetCohort",
-        "Compare target vs comparator cohort" = "comparatorCohort"
-      ),
-      selected = "Target cohort"
+  shinyjs::useShinyjs(),
+  bslib::page_navbar(
+    title = "Cohort Charaterization Analysis",
+    theme = bslib::bs_theme(
+      "navbar-bg" = "#005480",
+      fg = "black",
+      bg = "white"
     ),
-  ),
-  column(3,
-         uiOutput("secondSelect"))),
-  
-  # fluidRow(column(12, textOutput("test"))),
-  
-  fluidRow(column(12, uiOutput("tables"))),
-  
-  tags$style(
-    type = "text/css",
-    ".shiny-output-error { visibility: hidden; }",
-    ".shiny-output-error:before { visibility: hidden; }"
-  ),
-  # tags$head(
-  #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-  # )
+    bslib::layout_sidebar(
+      sidebar = sidebar(
+        width = "400px",
+        pickerInput(
+          "cohort",
+          "Cohort name",
+          c(
+            "Target cohort" = "targetCohort",
+            "Compare target vs comparator cohort" = "comparatorCohort"
+          ),
+          selected = "Target cohort",
+          options = pickerOptions(actionsBox = TRUE)
+        ),
+        conditionalPanel(condition = "input.cohort == 'targetCohort'",
+                         uiOutput("secondSelect")),
+        conditionalPanel(condition = "input.cohort == 'comparatorCohort'",
+                         uiOutput("thirdSelect"))
+      ),
+      card(
+        min_height = "400px",
+        p(
+          tags$a("Cardiovascular event", href = atlas_link, target = "_blank"),
+          style = "margin-bottom: 15px; font-size: 1.5em"
+        ),
+        uiOutput("tables"),
+        tags$style(
+          type = "text/css",
+          ".shiny-output-error { visibility: hidden; }",
+          ".shiny-output-error:before { visibility: hidden; }"
+        ),
+        tags$a(
+          "Link to app code",
+          href = "https://github.com/OdyOSG/AtlasShinyExport",
+          target = "_blank",
+          style = "postition: absolute; bottom: 0; left 0;"
+        )
+      )
+    )
+  )
 )

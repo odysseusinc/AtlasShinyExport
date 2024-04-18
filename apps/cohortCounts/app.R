@@ -2,6 +2,7 @@ library(shiny)
 library(dplyr)
 library(echarts4r)
 library(reactable)
+library(bslib)
 
 source("read_data.R")
 cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
@@ -15,50 +16,61 @@ data_sources <- list.files("data", pattern = ".json$") %>%
 
 ui <- fluidPage(
   shinyjs::useShinyjs(),
-  fluidRow(
-    column(width = 6, titlePanel("Cohort Inclusion Report")),
-    column(width = 6, selectInput("datasource", "Data Source", choices = data_sources), style = "margin-top: 15px")
-  ),
-  
-  p(tags$a(cohort_name, href = cohort_link), style = "margin-bottom: 15px; font-size: 1.5em"),
-  
-  fluidRow(column(width = 6, offset = 5,
-    shinyWidgets::radioGroupButtons(
-      inputId = "level",
-      label = "",
-      selected = "person",
-      individual = TRUE,
-      choiceNames = c("By Person", "By Event"),
-      choiceValues = c("person", "event")
-    )
-  )),
-  
-  fluidRow(column(width = 12, textOutput("upper_summary_text"))),
-  
-  fluidRow(column(width = 12, 
-    tags$div(id = "filter_text",
-      "Having", 
-      tags$div(style="display:inline-block", selectInput("any_all", "", c("any", "all"), selectize = F, width = "80px")),
-      "of selected criteria",
-      tags$div(style="display:inline-block", selectInput("passed_failed", "", c("passed", "failed"), selectize = F, width = "100px"))
+  bslib::page_navbar(
+    theme = bslib::bs_theme("navbar-bg" = "#005480",
+                            fg="black",
+                            bg="white"),
+    title = "Cohort Inclusion Report",
+    sidebar = sidebar(
+      selectInput(
+        "datasource",
+        "Data source",
+        choices = data_sources,
+        selected = "SYNPUF5PCT"
+      ),
+      shinyWidgets::radioGroupButtons(
+        inputId = "level",
+        label = "Cohort unit",
+        selected = "person",
+        individual = TRUE,
+        choiceNames = c("Person", "Event"),
+        choiceValues = c("person", "event"),
+        size = "sm",
+        width = "100%"
+      )
     ),
-    tags$div(id = "filter_text_filler", HTML("<br><br><br>")) # fill the space when filter_text is hidden (i.e. when in attrition view).
-  )),
-
-  fluidRow(
-    column(width = 4, 
-           reactableOutput("inclusion_table"),
-           tags$br(),
-           textOutput("lower_summary_text")),
-    
-    column(width = 8,
-      actionLink("switch_view", "Switch to attrition view", style = "float: right"), 
-      tags$br(), tags$br(),
-      htmlOutput("count_in_selected_subset_text"), 
-      echarts4rOutput('plot'))
-  ),
-  
-  div(a("Link to app code", href = "https://github.com/OdyOSG/AtlasShinyExport"), style = "postition: absolute; bottom: 0; left 0;")
+    card(
+      p(tags$a(cohort_name, href = cohort_link), style = "margin-bottom: 15px; font-size: 1.5em"),
+         
+         fluidRow(column(width = 12, textOutput("upper_summary_text"))),
+         
+         fluidRow(column(width = 12, 
+                         tags$div(id = "filter_text",
+                                  "Having", 
+                                  tags$div(style="display:inline-block", selectInput("any_all", "", c("any", "all"), selectize = F, width = "80px")),
+                                  "of selected criteria",
+                                  tags$div(style="display:inline-block", selectInput("passed_failed", "", c("passed", "failed"), selectize = F, width = "100px"))
+                         ),
+                         tags$div(id = "filter_text_filler", HTML("<br><br><br>")) # fill the space when filter_text is hidden (i.e. when in attrition view).
+         )),
+         
+         fluidRow(
+           column(width = 4, 
+                  reactableOutput("inclusion_table"),
+                  tags$br(),
+                  textOutput("lower_summary_text")),
+           
+           column(width = 8,
+                  actionLink("switch_view", "Switch to attrition view", style = "float: right"), 
+                  tags$br(), tags$br(),
+                  htmlOutput("count_in_selected_subset_text"), 
+                  echarts4rOutput('plot'))
+         ),
+         
+         div(a("Link to app code", href = "https://github.com/OdyOSG/AtlasShinyExport"), style = "postition: absolute; bottom: 0; left 0;")
+         
+         )
+  )
 )
 
 server <- function(input, output) {
