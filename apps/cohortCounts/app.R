@@ -3,6 +3,7 @@ library(dplyr)
 library(echarts4r)
 library(reactable)
 library(bslib)
+library(plotly)
 
 source("read_data.R")
 cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
@@ -146,7 +147,7 @@ server <- function(input, output) {
     } else if (attritionView() == 1) {
       app_data[[input$datasource]][[input$level]]$attrition_table %>% 
         mutate(pct_remain = round(pct_remain, 4),
-               pct_diff = round(pct_remain, 4)) %>% 
+               pct_diff = round(pct_diff, 4)) %>% 
         reactable(sortable = FALSE,
                   columns = list("ID" = colDef(name = "ID"),
                                  "Inclusion Rule" = colDef(name = "Inclusion Rule"),
@@ -185,8 +186,8 @@ server <- function(input, output) {
   })
   
   output$plot <- renderEcharts4r({
+  if (attritionView() == 0) {
     
-    if (attritionView() == 0) {
     shinyjs::runjs("Shiny.setInputValue('box_click', {name: false})")
     
     app_data[[input$datasource]][[input$level]]$treemap_table %>% 
@@ -197,23 +198,15 @@ server <- function(input, output) {
       # use the code below for mouse over interaction
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}", event = "mouseover") %>% 
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: false});}", event = "mouseout")
-    } else if (attritionView() == 1) {
-      app_data[[input$datasource]][[input$level]]$attrition_table
-      
-      df <- tibble(
-        x = factor(5:1),
-        y = rev(c(1000, 555, 99, 10, 0)),
-        pad = (max(y) - y)/2
-      )
-      
-      df %>% 
-        e_charts(x) %>% 
-        e_bar(pad, stack = "grp", legend = F, color = 'rgba(0,0,0,0)') %>% # used for offset
-        e_bar(y, stack = "grp", legend = F) %>% 
-        e_flip_coords() %>% 
-        e_x_axis(show = F) %>% 
-        e_y_axis(show = F) %>% 
-        e_hide_grid_lines() 
+  }
+   else if (attritionView() == 1) {
+      df <- tibble(app_data[[input$datasource]][[input$level]]$attrition_table)
+      df <- select(df, ID, pct_diff) %>%
+        mutate(pct_diff = round(pct_diff*100, 2)) %>%
+        e_charts(ID) %>%
+        e_bar(pct_diff) %>%
+        e_labels() %>%
+        e_hide_grid_lines()
       
     } else {
       stop("There is a problem. attritionView should only be 0 or 1.")
