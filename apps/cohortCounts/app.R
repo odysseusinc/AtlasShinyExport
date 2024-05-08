@@ -3,7 +3,6 @@ library(dplyr)
 library(echarts4r)
 library(reactable)
 library(bslib)
-library(plotly)
 
 source("read_data.R")
 cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
@@ -41,7 +40,7 @@ ui <- fluidPage(
       )
     ),
     card(
-      p(tags$a(cohort_name, href = cohort_link), style = "margin-bottom: 15px; font-size: 1.5em"),
+      p(tags$a(cohort_name, href = cohort_link), style = "margin-bottom: 15px; font-size: 1em", target = "_blank"),
          
          fluidRow(column(width = 12, textOutput("upper_summary_text"))),
          
@@ -138,6 +137,7 @@ server <- function(input, output) {
       reactable(selection = "multiple", 
                 onClick = "select", 
                 defaultSelected = defaultSelected,
+                bordered = TRUE,
                 columns = list("Inclusion Rule" = colDef(style = style_function),
                                "ID" = colDef(style = style_function, align = "left", maxWidth = 40),
                                "Count" = colDef(style = style_function),
@@ -149,6 +149,7 @@ server <- function(input, output) {
         mutate(pct_remain = round(pct_remain, 4),
                pct_diff = round(pct_diff, 4)) %>% 
         reactable(sortable = FALSE,
+                  bordered = TRUE,
                   columns = list("ID" = colDef(name = "ID"),
                                  "Inclusion Rule" = colDef(name = "Inclusion Rule"),
                                  "Count" = colDef(name = "Count"),
@@ -194,7 +195,8 @@ server <- function(input, output) {
       e_charts() %>% 
       e_treemap(roam = F) %>% 
       e_toolbox_feature(feature = "saveAsImage") %>% 
-      e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}")
+      e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}") %>%
+      e_visual_map(value, inRange = list(color = c("#1f88a6","#2fcefb","#0f4251")))
       # use the code below for mouse over interaction
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}", event = "mouseover") %>% 
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: false});}", event = "mouseout")
@@ -207,7 +209,6 @@ server <- function(input, output) {
         e_bar(pct_diff) %>%
         e_labels() %>%
         e_hide_grid_lines()
-      
     } else {
       stop("There is a problem. attritionView should only be 0 or 1.")
     }
