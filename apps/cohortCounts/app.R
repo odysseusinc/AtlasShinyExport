@@ -10,6 +10,10 @@ cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
 cohort_link <- readr::read_file(file.path("data", "cohort_link.txt"))
 app_data <- read_data(path = "data")
 
+if (length(app_data[[1]]$event$inclusion_table$ID) < 1 |
+    length(app_data[[1]]$person$inclusion_table$ID) < 1)
+  stop(paste("zero inclusion rules in the cohort!"))
+
 # get the list of unique data source keys
 data_sources <- list.files("data", pattern = ".json$") %>%
   stringr::str_remove("_by_(person|event).json$") %>%
@@ -23,47 +27,43 @@ ui <- fluidPage(
       fg = "black",
       bg = "white"
     ),
+    underline = TRUE,
     title = "Cohort Inclusion Report",
+    id = "nav",
     sidebar = sidebar(
-      selectInput(
-        "datasource",
-        "Data source",
-        choices = data_sources,
-        selected = "SYNPUF5PCT"
+      conditionalPanel(
+        "input.nav === 'Description'",
+        "Description of the Application's functionalities"
       ),
-      shinyWidgets::radioGroupButtons(
-        inputId = "level",
-        label = "Cohort unit",
-        selected = "person",
-        individual = TRUE,
-        choiceNames = c("Person", "Event"),
-        choiceValues = c("person", "event"),
-        size = "sm",
-        width = "100%"
-      ),
-      shinyWidgets::radioGroupButtons(
-        inputId = "switch_view",
-        label = "Cohort unit",
-        selected = "Intersect",
-        individual = TRUE,
-        choiceNames = c("Intersect", "Attrition"),
-        choiceValues = c("Intersect", "Attrition"),
-        size = "sm",
-        width = "100%"
+      conditionalPanel(
+        "input.nav === 'Analysis'",
+        shinyWidgets::radioGroupButtons(
+          inputId = "level",
+          label = "Cohort unit",
+          selected = "person",
+          individual = TRUE,
+          choiceNames = c("Person", "Event"),
+          choiceValues = c("person", "event"),
+          size = "sm",
+          width = "100%"
+        ),
+        shinyWidgets::radioGroupButtons(
+          inputId = "switch_view",
+          label = "Cohort unit",
+          selected = "Intersect",
+          individual = TRUE,
+          choiceNames = c("Intersect", "Attrition"),
+          choiceValues = c("Intersect", "Attrition"),
+          size = "sm",
+          width = "100%"
+        )
       )
     ),
-    nav_spacer(),
-    nav_menu(
-      title = "Links",
-      align = "right",
-      nav_item(
-        a("Bitbucket Repository", href = "https://bitbucket.org/Odysseus/atlasshinyexport/src/main/apps/cohortCounts/", target = "_blank")
-      ),
-      nav_item(a(
-        cohort_name, href = cohort_link, target = "_blank"
-      ))
-    ),
-    card(
+    nav_panel("Description", card(p("Provide's important statistics and charts to describe
+                                    cohort counts and percentages of persons or records in 
+                                    the cohort afther apliying a certain set of inclusion 
+                                    rules."))),
+    nav_panel("Analysis", card(
       fluidRow(column(
         width = 12, textOutput("upper_summary_text")
       )),
@@ -98,16 +98,15 @@ ui <- fluidPage(
         tags$div(id = "filter_text_filler", HTML("<br><br><br>")) # fill the space when filter_text is hidden (i.e. when in attrition view).
       )),
       
+      fluidRow(column(
+        width = 6,
+        reactableOutput("inclusion_table"),
+        tags$br(),
+        textOutput("lower_summary_text")
+      )),
       fluidRow(
         column(
-          width = 4,
-          reactableOutput("inclusion_table"),
-          tags$br(),
-          textOutput("lower_summary_text")
-        ),
-        
-        column(
-          width = 8,
+          width = 12,
           # actionButton("switch_view", "Switch to attrition view", style = "float: right"),
           tags$br(),
           tags$br(),
@@ -115,8 +114,18 @@ ui <- fluidPage(
           echarts4rOutput('plot')
         )
       )
-      
-    )
+    )),
+    nav_spacer(),
+    nav_menu(
+      title = "Links",
+      align = "right",
+      nav_item(
+        a("Bitbucket Repository", href = "https://bitbucket.org/Odysseus/atlasshinyexport/src/main/apps/cohortCounts/", target = "_blank")
+      ),
+      nav_item(a(
+        cohort_name, href = cohort_link, target = "_blank"
+      ))
+    ),
   )
 )
 
@@ -155,7 +164,7 @@ server <- function(input, output) {
       return(HTML("<br>"))
     req(input$box_click$name)
     
-    x <- app_data[[input$datasource]][[input$level]]$treemap_table %>%
+    x <- app_data$SYNPUF_110k[[input$level]]$treemap_table %>%
       mutate(total = sum(value),
              percent = round(100 * value / total, 2)) %>%
       filter(name == input$box_click$name) %>%
@@ -190,37 +199,49 @@ server <- function(input, output) {
           list(color = "black")
       }
       
-      defaultSelected <- seq_len(nrow(app_data[[input$datasource]][[input$level]]$inclusion_table))
+      defaultSelected <- seq_len(nrow(app_data$SYNPUF_110k[[input$level]]$inclusion_table))
       
-      app_data[[input$datasource]][[input$level]]$inclusion_table %>%
+      app_data[[1]][[input$level]]$inclusion_table %>%
         reactable(
           selection = "multiple",
           onClick = "select",
           defaultSelected = defaultSelected,
           bordered = TRUE,
           columns = list(
-            "Inclusion Rule" = colDef(style = style_function,
-                                      header = tippy("Inclusion Rule",
-                                                     "Criteria to be included in the cohort.",
-                                                     placement = "right")),
+            "Inclusion Rule" = colDef(
+              style = style_function,
+              header = tippy(
+                "Inclusion Rule",
+                "Criteria to be included in the cohort.",
+                placement = "right"
+              )
+            ),
             "ID" = colDef(
               style = style_function,
               align = "left",
               maxWidth = 40
             ),
-            "Count" = colDef(style = style_function,
-                             header = tippy("Count",
-                                            "Number of persons that fullfill the criteria.",
-                                            placement = "right")),
-            "Percent" = colDef(style = style_function,
-                               header = tippy("Percent",
-                                              "Percent of the cohort that fullfill the criteria.",
-                                              placement = "right"))
+            "Count" = colDef(
+              style = style_function,
+              header = tippy(
+                "Count",
+                "Number of persons that fullfill the criteria.",
+                placement = "right"
+              )
+            ),
+            "Percent" = colDef(
+              style = style_function,
+              header = tippy(
+                "Percent",
+                "Percent of the cohort that fullfill the criteria.",
+                placement = "right"
+              )
+            )
           )
         )
       
     } else if (attritionView() == 1) {
-      app_data[[input$datasource]][[input$level]]$attrition_table %>%
+      app_data[[1]][[input$level]]$attrition_table %>%
         mutate(pct_remain = round(pct_remain, 4),
                pct_diff = round(pct_diff, 4)) %>%
         reactable(
@@ -228,24 +249,40 @@ server <- function(input, output) {
           bordered = TRUE,
           columns = list(
             "ID" = colDef(name = "ID"),
-            "Inclusion Rule" = colDef(name = "Inclusion Rule",
-                                      header = tippy("Inclusion Rule",
-                                                     "Criteria to be included in the cohort.",
-                                                     placement = "right")),
-            "Count" = colDef(name = "Count",
-                             header = tippy("Count",
-                                            "Number of persons that fullfill the criteria.",
-                                            placement = "right")),
-            "pct_remain" = colDef(name = "Percent remaining", 
-                                  format = colFormat(percent = TRUE),
-                                  header = tippy("Percent remaining",
-                                                 "Percentage of persons remaining in the cohort after fullfilling the criteria.",
-                                                 placement = "right")),
-            "pct_diff" = colDef(name = "Percent difference", 
-                                format = colFormat(percent = TRUE),
-                                header = tippy("Percent difference",
-                                               "Differebce in the percentage remaining after fullfilling the criteria.",
-                                               placement = "right"))
+            "Inclusion Rule" = colDef(
+              name = "Inclusion Rule",
+              header = tippy(
+                "Inclusion Rule",
+                "Criteria to be included in the cohort.",
+                placement = "right"
+              )
+            ),
+            "Count" = colDef(
+              name = "Count",
+              header = tippy(
+                "Count",
+                "Number of persons that fullfill the criteria.",
+                placement = "right"
+              )
+            ),
+            "pct_remain" = colDef(
+              name = "Percent remaining",
+              format = colFormat(percent = TRUE),
+              header = tippy(
+                "Percent remaining",
+                "Percentage of persons remaining in the cohort after fullfilling the criteria.",
+                placement = "right"
+              )
+            ),
+            "pct_diff" = colDef(
+              name = "Percent difference",
+              format = colFormat(percent = TRUE),
+              header = tippy(
+                "Percent difference",
+                "Differebce in the percentage remaining after fullfilling the criteria.",
+                placement = "right"
+              )
+            )
           )
         )
     } else {
@@ -266,7 +303,7 @@ server <- function(input, output) {
   
   treemap_table <- reactive({
     # app_data$SYNPUF_110k$person$treemap_table %>% # for testing
-    app_data[[input$datasource]][[input$level]]$treemap_table %>%
+    app_data[[1]][[input$level]]$treemap_table %>%
       mutate(
         ids = stringr::str_replace(name, "None", "0") %>% stringr::str_split(",") %>% lapply(as.integer)
       ) %>%
@@ -294,7 +331,7 @@ server <- function(input, output) {
     if (attritionView() == 0) {
       shinyjs::runjs("Shiny.setInputValue('box_click', {name: false})")
       
-      app_data[[input$datasource]][[input$level]]$treemap_table %>%
+      app_data[[1]][[input$level]]$treemap_table %>%
         e_charts() %>%
         e_treemap() %>%
         e_toolbox_feature(feature = "saveAsImage") %>%
@@ -305,7 +342,7 @@ server <- function(input, output) {
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: false});}", event = "mouseout")
     }
     else if (attritionView() == 1) {
-      df <- tibble(app_data[[input$datasource]][[input$level]]$attrition_table)
+      df <- tibble(app_data[[1]][[input$level]]$attrition_table)
       df <- select(df, ID, pct_diff) %>%
         mutate(pct_diff = round(pct_diff * 100, 2)) %>%
         rename(`Percent diffecerence` = pct_diff) %>%
@@ -319,7 +356,7 @@ server <- function(input, output) {
   })
   
   output$upper_summary_text <- renderText({
-    s <- app_data[[input$datasource]][[input$level]]$summary_table
+    s <- app_data[[1]][[input$level]]$summary_table
     glue::glue(
       "Initial Count: {format(s$initial_index_events, big.mark=',', scientific=FALSE)}"
     )
