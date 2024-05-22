@@ -32,8 +32,8 @@ ui <- fluidPage(
     id = "nav",
     sidebar = sidebar(
       conditionalPanel(
-        "input.nav === 'Description'",
-        "Description of the Application's functionalities"
+        "input.nav === 'Introduction'",
+        "Application's functionalities."
       ),
       conditionalPanel(
         "input.nav === 'Analysis'",
@@ -59,7 +59,7 @@ ui <- fluidPage(
         )
       )
     ),
-    nav_panel("Description", card(p("Provide's important statistics and charts to describe
+    nav_panel("Introduction", card(p("Provide's important statistics and charts to describe
                                     cohort counts and percentages of persons or records in 
                                     the cohort afther apliying a certain set of inclusion 
                                     rules."))),
