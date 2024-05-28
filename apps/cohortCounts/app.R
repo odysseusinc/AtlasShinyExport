@@ -99,7 +99,7 @@ ui <- fluidPage(
       )),
       
       fluidRow(column(
-        width = 6,
+        width = 8,
         reactableOutput("inclusion_table"),
         tags$br(),
         textOutput("lower_summary_text")
@@ -214,7 +214,8 @@ server <- function(input, output) {
                 "Inclusion Rule",
                 "Criteria to be included in the cohort.",
                 placement = "right"
-              )
+              ),
+              width = 500
             ),
             "ID" = colDef(
               style = style_function,
@@ -248,14 +249,15 @@ server <- function(input, output) {
           sortable = FALSE,
           bordered = TRUE,
           columns = list(
-            "ID" = colDef(name = "ID"),
+            "ID" = colDef(name = "ID", maxWidth = 40),
             "Inclusion Rule" = colDef(
               name = "Inclusion Rule",
               header = tippy(
                 "Inclusion Rule",
                 "Criteria to be included in the cohort.",
                 placement = "right"
-              )
+              ),
+              width = 500
             ),
             "Count" = colDef(
               name = "Count",
