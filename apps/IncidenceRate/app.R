@@ -8,6 +8,7 @@ library(bslib)
 
 source("read_data.R")
 # cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
+datasource <- "SYNPUF5PCT"
 app_data <- read_data(path = "data")
 atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
 repo_link <- readr::read_lines(file.path("data", "repo_link.txt"))
@@ -43,45 +44,54 @@ ui <- fluidPage(
       bg = "white"
     ),
     title = "Incidence Rate Analysis",
+    id = "nav",
     sidebar = sidebar(
-      selectInput(
-        "datasource",
-        "Data source",
-        choices = data_sources,
-        selected = "SYNPUF5PCT"
+      conditionalPanel(
+        "input.nav === 'Introduction'",
+        "Application's and cohort descriptions."
       ),
-      selectInput("target_id", "Target cohorts", target_cohorts),
-      selectInput("outcome_id",
-                  "Outcome cohorts",
-                  outcome_cohorts
-                  # selectize = F,
-                  # width = "150px")),
+      conditionalPanel(
+        "input.nav === 'Analysis'",
+        selectInput("target_id", "Target cohorts", target_cohorts),
+        selectInput("outcome_id", "Outcome cohorts", outcome_cohorts
+                    # selectize = F,
+                    # width = "150px")),))
+        )
       )
     ),
-    card(
-      p(tags$a(
-        "GI bleed", href = atlas_link, target = "_blank"
-      ), style = "margin-bottom: 15px; font-size: 1.5em"),
-      tags$h5("Summary Statistics for the Cohort"),
-      reactableOutput("summary_table"),
-      tags$br(),
-      tags$br(),
-      tags$br(),
-      tags$h5("Summary Statistics for Strata within the Cohort"),
-      reactableOutput("subgroup_table"),
-      htmlOutput("selected_subset_text"),
-      echarts4rOutput('treemap'),
-      tags$a(
-        "Link to app code",
-        href = repo_link,
-        target = "_blank",
-        style = "postition: absolute; bottom: 0; left 0;"
-      )
-      
-      # fluidRow(column(width = 12, textOutput("lower_summary_text"))),
+    nav_panel("Introduction", card(
+      p("Incidence rates and proportions are statistics that are used in public health to assess 
+        the occurrence of a new outcome in a population during a time-at-risk (TAR)."),
+      p("In an incidence calculation, we describe: amongst the persons in the target cohort, 
+        who experienced the outcome cohort during the time at risk period.")
+    )),
+    nav_panel(
+      "Analysis",
+      card(
+        tags$h5("Summary Statistics for the Cohort"),
+        reactableOutput("summary_table"),
+        #tags$br(),
+        #tags$br(),
+        tags$br(),
+        tags$h5("Summary Statistics for Strata within the Cohort"),
+        reactableOutput("subgroup_table"),
+        htmlOutput("selected_subset_text"),
+        echarts4rOutput('treemap')
+      ),
+    ),
+    nav_spacer(),
+    nav_menu(
+      title = "Links",
+      align = "right",
+      nav_item(a(
+        "Bitbucket Repository", href = repo_link, target = "_blank"
+      )),
+      nav_item(a(
+        "OHDSI Atlas: GI bleed", href = atlas_link, target = "_blank"
+      ))
     )
   )
-)
+) 
   
   server <- function(input, output) {
     # when a box on the treemap is clicked this reactive will store the associated IDs as numbers
@@ -97,7 +107,7 @@ ui <- fluidPage(
       
       x <- app_data$treemap_table %>%
         filter(
-          data_source == input$datasource,
+          data_source == datasource,
           target == input$target_id,
           outcome == input$outcome_id,
           subset_ids == input$box_click$name
@@ -106,12 +116,12 @@ ui <- fluidPage(
       if (nrow(x) != 1)
         stop("Error with filtering. Only one subgroup should be selected!")
       
+      output$description <- renderText(ROhdsiWebApi::getCohortDefinition(cohortId = 1747753, "http://api.ohdsi.org:8080/WebAPI/")[[3]]) 
+      
       n_criteria <- app_data$subgroup_table %>%
-        filter(
-          data_source == input$datasource,
-          target == input$target_id,
-          outcome == input$outcome_id
-        ) %>%
+        filter(data_source == datasource,
+               target == input$target_id,
+               outcome == input$outcome_id) %>%
         nrow()
       
       n_critera_passed <-
@@ -131,11 +141,9 @@ ui <- fluidPage(
     
     output$summary_table <- renderReactable({
       app_data$summary_table %>%
-        filter(
-          data_source == input$datasource,
-          target == input$target_id,
-          outcome == input$outcome_id
-        ) %>%
+        filter(data_source == datasource,
+               target == input$target_id,
+               outcome == input$outcome_id) %>%
         mutate(
           proportion_per_1k_persons = round(proportion_per_1k_persons, 2),
           rate_per_1k_years = round(rate_per_1k_years, 2)
@@ -207,11 +215,9 @@ ui <- fluidPage(
       }
       
       app_data$subgroup_table %>%
-        filter(
-          data_source == input$datasource,
-          target == input$target_id,
-          outcome == input$outcome_id
-        ) %>%
+        filter(data_source == datasource,
+               target == input$target_id,
+               outcome == input$outcome_id) %>%
         mutate(
           proportion_per_1k_persons = round(proportion_per_1k_persons, 2),
           rate_per_1k_years = round(rate_per_1k_years, 2)
@@ -284,12 +290,10 @@ ui <- fluidPage(
         mutate(
           ids = stringr::str_replace(name, "None", "0") %>% stringr::str_split(",") %>% lapply(as.integer)
         ) %>%
-        filter(
-          data_source == input$datasource,
-          target == input$target_id,
-          outcome == input$outcome_id
-        ) %>%
-        select(-data_source,-target_id,-outcome_id)
+        filter(data_source == datasource,
+               target == input$target_id,
+               outcome == input$outcome_id) %>%
+        select(-data_source, -target_id, -outcome_id)
     })
     
     output$treemap <- renderEcharts4r({
@@ -297,16 +301,15 @@ ui <- fluidPage(
       
       # input = list(datasource = "SYNPUF1K", target_id = 1788144, outcome_id = 1773979)
       app_data$treemap_table %>%
-        filter(
-          data_source == input$datasource,
-          target == input$target_id,
-          outcome == input$outcome_id
-        ) %>%
+        filter(data_source == datasource,
+               target == input$target_id,
+               outcome == input$outcome_id) %>%
         select(name = subset_ids, value = cases) %>%
         e_charts() %>%
         e_treemap(roam = F) %>%
         e_toolbox_feature(feature = "saveAsImage") %>%
-        e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}") #%>%
+        e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}") %>%
+        e_visual_map(value, inRange = list(color = c("#1f88a6", "#2fcefb", "#0f4251")))
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: params.name});}", event = "mouseover") %>%
       # e_on(query = ".", handler = "function(params) {Shiny.setInputValue('box_click', {name: false});}", event = "mouseout")
     })
