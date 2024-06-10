@@ -8,7 +8,7 @@ library(bslib)
 
 source("read_data.R")
 # cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
-datasource <- "SYNPUF5PCT"
+datasource <- readr::read_lines(file.path("data", "datasource.txt"))
 app_data <- read_data(path = "data")
 atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
 repo_link <- readr::read_lines(file.path("data", "repo_link.txt"))
