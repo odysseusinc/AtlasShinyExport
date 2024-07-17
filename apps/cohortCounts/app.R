@@ -4,17 +4,19 @@ library(echarts4r)
 library(reactable)
 library(bslib)
 library(tippy)
+library(ROhdsiWebApi)
+
 
 source("read_data.R")
 cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
 cohort_link <- readr::read_file(file.path("data", "cohort_link.txt"))
 app_data <- read_data(path = "data")
 definition <- 
-
-
-if (length(app_data[[1]]$event$inclusion_table$ID) < 1 |
-    length(app_data[[1]]$person$inclusion_table$ID) < 1)
-  stop(paste("zero inclusion rules in the cohort!"))
+  
+  
+  #  if (length(app_data[[1]]$event$inclusion_table$ID) < 1 |
+  #    length(app_data[[1]]$person$inclusion_table$ID) < 1)
+   # stop(paste("zero inclusion rules in the cohort!"))
 
 # get the list of unique data source keys
 data_sources <- list.files("data", pattern = ".json$") %>%
@@ -65,7 +67,7 @@ ui <- fluidPage(
                                     cohort counts and percentages of persons or records in 
                                     the cohort afther apliying a certain set of inclusion 
                                     rules."),
-                                    p("Cohort entry event: The cohort entry event (initial ev ent) defines 
+                                   p("Cohort entry event: The cohort entry event (initial ev ent) defines 
                                     the time when people enter the cohort, called the cohort index date. A cohort 
                                     entry event can be any event recorded in the CDM such as drug exposures, conditions, 
                                     procedures, measurements and visits. Initial events are defined by the CDM domain where
@@ -75,7 +77,7 @@ ui <- fluidPage(
                                     first diagnosis/procedure/etc, specifying start and end date, specifying visit type or
                                     criteria, days supply, etc). The set of people having an entry event is referred to as 
                                     the initial event cohort."),
-                                    p("Inclusion criteria: Inclusion criteria are applied to the initial event cohort to further 
+                                   p("Inclusion criteria: Inclusion criteria are applied to the initial event cohort to further 
                                     restrict the set of people. Each inclusion criterion is defined by the CDM domain(s) 
                                     where the data are stored, concept set(s) representing the clinical activity, 
                                     domain-specific attributes (e.g. days supply, visit type, etc), and the temporal 
@@ -83,13 +85,13 @@ ui <- fluidPage(
                                     to determine the impact of the criteria on the attrition of persons from the initial 
                                     event cohort. The qualifying cohort is defined as all people in the initial event 
                                     cohort that satisfy all inclusion criteria."),
-                                    p("Cohort exit criteria: The cohort exit event signifies when a person no longer qualifies 
+                                   p("Cohort exit criteria: The cohort exit event signifies when a person no longer qualifies 
                                     for cohort membership. Cohort exit can be defined in multiple ways such as the end of
                                     the observation period, a fixed time interval relative to the initial entry event, the
                                     last event in a sequence of related observations (e.g. persistent drug exposure) or through 
                                     other censoring of observation period. Cohort exit strategy will impact whether a person 
                                     can belong to the cohort multiple times during different time intervals."),
-                                    p("The description of the cohort being analysed is: ", textOutput("description")))),
+                                   p("The description of the cohort being analysed is: ",textOutput("description")))),
     nav_panel("Analysis", card(
       fluidRow(column(
         width = 12, textOutput("upper_summary_text")
@@ -220,109 +222,141 @@ server <- function(input, output) {
   # )
   
   output$inclusion_table <- renderReactable({
-    if (attritionView() == 0) {
-      style_function <- function(value, index) {
-        if (index %in% rows_to_highlight())
-          list(color = "red")
-        else
-          list(color = "black")
+    result <- tryCatch({
+      if (attritionView() == 0) {
+        style_function <- function(value, index) {
+          if (index %in% rows_to_highlight())
+            list(color = "red")
+          else
+            list(color = "black")
+        }
+        print(paste("nrow"))
+        print("---")
+        #result <- tryCatch({
+       #if(!is.na(app_data[[1]][[input$level]]$inclusion_table))
+       # {
+        #  if(is.numeric(app_data[[1]][[input$level]]$inclusion_table))
+         # {
+           # if(app_data[[1]][[input$level]]$inclusion_table >= 0)
+            #{
+              print(paste("inc_table"))
+              inc_table <- app_data[[1]][[input$level]]$inclusion_table
+              print(paste("inc_table", inc_table))
+              #defaultSelected <- seq_len(nrow(app_data$SYNPUF_110k[[input$level]]$inclusion_table))
+              defaultSelected <- seq_len(nrow(inc_table))
+              print(paste("defaultSelected",defaultSelected))
+              
+              print(paste("Value of defaultSelected : ",defaultSelected))
+              
+              
+              #app_data[[1]][[input$level]]$inclusion_table %>%
+              inc_table %>%
+                reactable(
+                  selection = "multiple",
+                  onClick = "select",
+                  defaultSelected = defaultSelected,
+                  bordered = TRUE,
+                  columns = list(
+                    "Inclusion Rule" = colDef(
+                      style = style_function,
+                      header = tippy(
+                        "Inclusion Rule",
+                        "Criteria to be included in the cohort.",
+                        placement = "right"
+                      ),
+                      width = 500
+                    ),
+                    "ID" = colDef(
+                      style = style_function,
+                      align = "left",
+                      maxWidth = 40
+                    ),
+                    "Count" = colDef(
+                      style = style_function,
+                      header = tippy(
+                        "Count",
+                        "Number of persons that fullfill the criteria.",
+                        placement = "right"
+                      )
+                    ),
+                    "Percent" = colDef(
+                      style = style_function,
+                      header = tippy(
+                        "Percent",
+                        "Percent of the cohort that fullfill the criteria.",
+                        placement = "right"
+                      )
+                    )
+                  )
+                )
+            #}
+         # }
+        #}
+        #else
+        #{
+        #  stop("Number of rows must be a non-negative integer")
+        #}
+        # }, error = function(e) {
+        #   print("No data found")
+        #   print(e$message)
+        # })
+      } else if (attritionView() == 1) {
+        app_data[[1]][[input$level]]$attrition_table %>%
+          mutate(pct_remain = round(pct_remain, 4),
+                 pct_diff = round(pct_diff, 4)) %>%
+          reactable(
+            sortable = FALSE,
+            bordered = TRUE,
+            columns = list(
+              "ID" = colDef(name = "ID", maxWidth = 40),
+              "Inclusion Rule" = colDef(
+                name = "Inclusion Rule",
+                header = tippy(
+                  "Inclusion Rule",
+                  "Criteria to be included in the cohort.",
+                  placement = "right"
+                ),
+                width = 500
+              ),
+              "Count" = colDef(
+                name = "Count",
+                header = tippy(
+                  "Count",
+                  "Number of persons that fullfill the criteria.",
+                  placement = "right"
+                )
+              ),
+              "pct_remain" = colDef(
+                name = "Percent remaining",
+                format = colFormat(percent = TRUE),
+                header = tippy(
+                  "Percent remaining",
+                  "Percentage of persons remaining in the cohort after fullfilling the criteria.",
+                  placement = "right"
+                )
+              ),
+              "pct_diff" = colDef(
+                name = "Percent difference",
+                format = colFormat(percent = TRUE),
+                header = tippy(
+                  "Percent difference",
+                  "Differebce in the percentage remaining after fullfilling the criteria.",
+                  placement = "right"
+                )
+              )
+            )
+          )
+      } else {
+        stop("There is a problem. attritionView should either be 1 or 0.")
       }
-      
-      defaultSelected <- seq_len(nrow(app_data$SYNPUF_110k[[input$level]]$inclusion_table))
-      
-      app_data[[1]][[input$level]]$inclusion_table %>%
-        reactable(
-          selection = "multiple",
-          onClick = "select",
-          defaultSelected = defaultSelected,
-          bordered = TRUE,
-          columns = list(
-            "Inclusion Rule" = colDef(
-              style = style_function,
-              header = tippy(
-                "Inclusion Rule",
-                "Criteria to be included in the cohort.",
-                placement = "right"
-              ),
-              width = 500
-            ),
-            "ID" = colDef(
-              style = style_function,
-              align = "left",
-              maxWidth = 40
-            ),
-            "Count" = colDef(
-              style = style_function,
-              header = tippy(
-                "Count",
-                "Number of persons that fullfill the criteria.",
-                placement = "right"
-              )
-            ),
-            "Percent" = colDef(
-              style = style_function,
-              header = tippy(
-                "Percent",
-                "Percent of the cohort that fullfill the criteria.",
-                placement = "right"
-              )
-            )
-          )
-        )
-      
-    } else if (attritionView() == 1) {
-      app_data[[1]][[input$level]]$attrition_table %>%
-        mutate(pct_remain = round(pct_remain, 4),
-               pct_diff = round(pct_diff, 4)) %>%
-        reactable(
-          sortable = FALSE,
-          bordered = TRUE,
-          columns = list(
-            "ID" = colDef(name = "ID", maxWidth = 40),
-            "Inclusion Rule" = colDef(
-              name = "Inclusion Rule",
-              header = tippy(
-                "Inclusion Rule",
-                "Criteria to be included in the cohort.",
-                placement = "right"
-              ),
-              width = 500
-            ),
-            "Count" = colDef(
-              name = "Count",
-              header = tippy(
-                "Count",
-                "Number of persons that fullfill the criteria.",
-                placement = "right"
-              )
-            ),
-            "pct_remain" = colDef(
-              name = "Percent remaining",
-              format = colFormat(percent = TRUE),
-              header = tippy(
-                "Percent remaining",
-                "Percentage of persons remaining in the cohort after fullfilling the criteria.",
-                placement = "right"
-              )
-            ),
-            "pct_diff" = colDef(
-              name = "Percent difference",
-              format = colFormat(percent = TRUE),
-              header = tippy(
-                "Percent difference",
-                "Differebce in the percentage remaining after fullfilling the criteria.",
-                placement = "right"
-              )
-            )
-          )
-        )
-    } else {
-      stop("There is a problem. attritionView should either be 1 or 0.")
-    }
-    
+    }, error = function(e) {
+      print("No data found")
+      print(e$message)
+    })
   })
   
   selected_rows <- reactive(getReactableState("inclusion_table", "selected"))
+  print("selected_rows :")
   
   # gt::gt() %>%
   # gt::fmt_number(columns = dplyr::matches("count"), decimals = 0) %>%
@@ -357,7 +391,7 @@ server <- function(input, output) {
       )
     
   })
-  
+  print(paste("treemap_table :"))
   output$plot <- renderEcharts4r({
     if (attritionView() == 0) {
       shinyjs::runjs("Shiny.setInputValue('box_click', {name: false})")
