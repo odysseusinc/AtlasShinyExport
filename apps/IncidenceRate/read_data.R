@@ -5,6 +5,12 @@
 path = "data"
 read_data <- function(path) {
   library(dplyr)
+  library(stringr)
+  library(glue)
+  library(cli)
+  library(purrr)
+  library(jsonlite)
+  library(tidyr)
   
   # get the list of unique data source keys
   filenames <-  list.files(path, pattern = ".json$") %>% 
@@ -37,7 +43,6 @@ read_data <- function(path) {
   if (length(missing_files) > 0) {
     cli::cli_abort("Missing json files with data! \n{paste(missing_files, collapse = ',\n')}")
   }
-  
   df <- expand.grid(data_source = data_sources, target = target_ids, outcome = outcome_ids) %>% 
     as_tibble() %>% 
     mutate(filename = glue::glue("{data_source}_targetId{target}_outcomeId{outcome}.json")) %>% 
@@ -48,33 +53,45 @@ read_data <- function(path) {
     mutate(cases = purrr::map_int(x, ~.[["summary"]]$cases)) %>% 
     mutate(proportion_per_1k_persons = cases * 1000 / total_persons,
            rate_per_1k_years = cases * 1000 / time_at_risk) %>% 
-    mutate(subgroup_df = purrr::map(x, 
-                                    ~tibble(x = .$stratifyStats) %>% 
-                                      tidyr::unnest_wider(col = x) %>% 
-                                      transmute(
-                                        subgroup_id = id,
-                                        subgroup_name = name,
-                                        total_persons = totalPersons, 
-                                        time_at_risk = timeAtRisk,
-                                        cases = cases,
-                                        proportion_per_1k_persons = cases * 1000 / total_persons,
-                                        rate_per_1k_years = cases * 1000 / time_at_risk)
-    )) 
+    mutate(subgroup_df = map(x, ~ {
+      stratify_stats <- .x$stratifyStats
+      
+      result <- if (!is.null(stratify_stats) && length(stratify_stats) != 0) {
+        tibble(x = stratify_stats) %>%
+          unnest_wider(col = x) %>%
+          transmute(
+            subgroup_id = id,
+            subgroup_name = name,
+            total_persons = totalPersons,
+            time_at_risk = timeAtRisk,
+            cases = cases,
+            proportion_per_1k_persons = cases * 1000 / totalPersons,
+            rate_per_1k_years = cases * 1000 / timeAtRisk
+          )
+      } else {
+        tibble(
+          subgroup_id = NA_real_, subgroup_name = NA_character_, total_persons = NA_integer_,
+          time_at_risk = NA_integer_, cases = NA_integer_,
+          proportion_per_1k_persons = NA_real_, rate_per_1k_years = NA_real_
+        )
+      }
+      
+    }))
   
   app_data = list()
   
   app_data[["summary_table"]] <- df %>% 
     select(data_source, target, outcome, total_persons, time_at_risk, cases, proportion_per_1k_persons, rate_per_1k_years)
-  
+  print(app_data[["summary_table"]])
   app_data[["subgroup_table"]] <- df %>% 
     select(data_source, target, outcome, subgroup_df) %>% 
     tidyr::unnest(col = subgroup_df)
-  
+  print(app_data[["subgroup_table"]])
   app_data[["treemap_table"]] <- df %>%
     select(data_source, target, outcome, x) %>% 
     mutate(treemap_data = purrr::map(x, ~.$treemapData %>% 
-                                         jsonlite::fromJSON(simplifyVector = FALSE) %>% 
-                                         tidy_treemap_data())) %>% 
+                                       jsonlite::fromJSON(simplifyVector = FALSE) %>% 
+                                       tidy_treemap_data())) %>% 
     select(-x) %>% 
     tidyr::unnest(treemap_data) %>% 
     rename(total_persons = totalPersons,
@@ -82,8 +99,8 @@ read_data <- function(path) {
            time_at_risk = timeAtRisk) %>% 
     mutate(proportion_per_1k_persons = cases * 1000 / total_persons,
            rate_per_1k_years = cases * 1000 / time_at_risk)
-    
   
+  print(app_data[["treemap_table"]])
   return(app_data)
 }
 
