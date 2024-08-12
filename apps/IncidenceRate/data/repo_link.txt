@@ -1,1 +1,1 @@
-https://github.com/OdyOSG/AtlasShinyExport
+https://gitlab.nimbus.amgen.com/titan/Atlas-Shiny-Apps

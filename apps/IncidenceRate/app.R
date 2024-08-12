@@ -84,7 +84,7 @@ ui <- fluidPage(
       title = "Links",
       align = "right",
       nav_item(a(
-        "Bitbucket Repository", href = repo_link, target = "_blank"
+        "Git Repository", href = repo_link, target = "_blank"
       )),
       nav_item(a(
         "OHDSI Atlas: GI bleed", href = atlas_link, target = "_blank"

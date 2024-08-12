@@ -2,33 +2,41 @@ server <- function(input, output, session) {
   T1 <- list()
   T2 <- list()
   
-  output$secondSelect <- renderUI({
-      pickerInput(
-        inputId = "analysis",
-        label = "Analysis name",
-        choices = c(cohortNames$targetCohort),
-        selected = c(cohortNames$targetCohort),
-        multiple = TRUE,
-        options = pickerOptions(
-          actionsBox = TRUE
+  observeEvent(input$cohort, {
+    cohort <- req(input$cohort)
+      if (cohort == "targetCohort") {
+        picket_input <- pickerInput(
+          inputId = "analysis",
+          label = "Analysis name",
+          choices = c(cohortNames$targetCohort),
+          selected = c(cohortNames$targetCohort),
+          multiple = TRUE,
+          options = pickerOptions(
+            actionsBox = TRUE
+          )
         )
-      )
-    })
-  output$thirdSelect <- renderUI({
-      pickerInput(
-        inputId = "analysis",
-        label = "Analysis name",
-        choices = c(cohortNames$comparatorCohort),
-        selected = c(cohortNames$comparatorCohort),
-        multiple = TRUE,
-        options = pickerOptions(
-          actionsBox = TRUE
+      } else if (cohort == "comparatorCohort") {
+        picket_input <- pickerInput(
+          inputId = "analysis",
+          label = "Analysis name",
+          choices = c(cohortNames$comparatorCohort),
+          selected = c(cohortNames$comparatorCohort),
+          multiple = TRUE,
+          options = pickerOptions(
+            actionsBox = TRUE
+          )
         )
-      )
+      }
+    output$mainSelector <- renderUI({
+      picket_input
     })
+  })
   
   a <-
     reactive({
+      req(input$analysis)
+      req(cohortNames$targetCohort)
+      logger::log_info("input$analysis: {input$analysis}")
       sapply(
         cohortNames$targetCohort,
         FUN = function(X)
@@ -83,10 +91,15 @@ server <- function(input, output, session) {
   
   
   output$tables <- renderUI({
-    if (input$cohort == "targetCohort")
+    # req(r())
+    logger::log_info("Rendering table")
+    if (isTruthy(input$cohort == "targetCohort"))
     {
+      req(r())
+      req(vapply(r(), isTruthy, logical(1)))
+      
       lapply(seq_len(l()), function(x) {
-        if (!is.null(targetCohort[[r()[[x]]]]$Avg)) {
+        if (isTruthy(r()[[x]]) && !is.null(targetCohort[[r()[[x]]]]$Avg)) {
           tags$div(
             class = "header",
             checked = NA,
@@ -140,6 +153,8 @@ server <- function(input, output, session) {
       })
     }
     else {
+      req(l())
+      req(sapply(s(), isTruthy))
       lapply(seq_len(l()), function(x) {
         tags$div(
           class = "header",

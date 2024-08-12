@@ -20,10 +20,8 @@ ui <- fluidPage(
           selected = "Target cohort",
           options = pickerOptions(actionsBox = TRUE)
         ),
-        conditionalPanel(condition = "input.cohort == 'targetCohort'",
-                         uiOutput("secondSelect")),
-        conditionalPanel(condition = "input.cohort == 'comparatorCohort'",
-                         uiOutput("thirdSelect"))
+        uiOutput("mainSelector")
+        
       ),
       card(
         min_height = "400px",
