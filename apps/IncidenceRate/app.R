@@ -10,8 +10,10 @@ source("read_data.R")
 # cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
 datasource <- readr::read_lines(file.path("data", "datasource.txt"))
 app_data <- read_data(path = "data")
+api_url <- "http://api.ohdsi.org:8080/WebAPI/"
 atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
-repo_link <- readr::read_lines(file.path("data", "repo_link.txt"))
+incidence_rate <- readr::read_lines(file.path("data", "incidence_rate_name.txt"))
+repo_link <- "https://gitlab.nimbus.amgen.com/titan/Atlas-Shiny-Apps"
 
 cohorts <- readr::read_csv(file.path("data", "cohorts.csv"))
 
@@ -87,7 +89,7 @@ ui <- fluidPage(
         "Git Repository", href = repo_link, target = "_blank"
       )),
       nav_item(a(
-        "OHDSI Atlas: GI bleed", href = atlas_link, target = "_blank"
+        incidence_rate, href = atlas_link, target = "_blank"
       ))
     )
   )
@@ -116,7 +118,7 @@ server <- function(input, output) {
     if (nrow(x) != 1)
       stop("Error with filtering. Only one subgroup should be selected!")
     
-    output$description <- renderText(ROhdsiWebApi::getCohortDefinition(cohortId = 1747753, "http://api.ohdsi.org:8080/WebAPI/")[[3]]) 
+    output$description <- renderText(ROhdsiWebApi::getCohortDefinition(cohortId = 1747753, api_url)[[3]]) 
     
     n_criteria <- app_data$subgroup_table %>%
       filter(data_source == datasource,

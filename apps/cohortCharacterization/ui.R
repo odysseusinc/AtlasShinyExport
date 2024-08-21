@@ -42,6 +42,17 @@ ui <- fluidPage(
           style = "postition: absolute; bottom: 0; left 0;"
         )
       )
+    ),
+    
+    nav_spacer(),
+    nav_menu(
+      title = "Links",
+      align = "right",
+      nav_item(
+        a("Git Repository", 
+          href = "https://gitlab.nimbus.amgen.com/titan/Atlas-Shiny-Apps", 
+          target = "_blank")
+      )
     )
   )
 )
