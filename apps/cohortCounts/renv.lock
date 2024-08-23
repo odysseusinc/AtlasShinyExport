@@ -879,6 +879,13 @@
       ],
       "Hash": "434cd5388a3979e74be5c219bcd6e77d"
     },
+    "properties": {
+      "Package": "properties",
+      "Version": "0.0-9",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d3df04863e8781048c2ad9747ff4b045"
+    },
     "purrr": {
       "Package": "purrr",
       "Version": "1.0.2",

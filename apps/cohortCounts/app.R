@@ -8,9 +8,13 @@ library(ROhdsiWebApi)
 
 
 source("read_data.R")
-cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
-cohort_link <- readr::read_file(file.path("data", "cohort_link.txt"))
-app_data <- read_data(path = "data")
+data_dir <- "data"
+
+PROPERTIES <- properties::read.properties(file.path(data_dir, "app.properties"))
+repo_link <- PROPERTIES$repo_link
+cohort_name <- PROPERTIES$cohort_name
+cohort_link <- PROPERTIES$cohort_link
+app_data <- read_data(path = data_dir)
 definition <- 
   
   
@@ -150,7 +154,7 @@ ui <- fluidPage(
       align = "right",
       nav_item(
         a("Git Repository", 
-          href = "https://gitlab.nimbus.amgen.com/titan/Atlas-Shiny-Apps", 
+          href = repo_link, 
           target = "_blank")
       ),
       nav_item(a(

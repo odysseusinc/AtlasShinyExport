@@ -1,3 +1,4 @@
+
 ui <- fluidPage(
   shinyjs::useShinyjs(),
   bslib::page_navbar(
@@ -50,9 +51,12 @@ ui <- fluidPage(
       align = "right",
       nav_item(
         a("Git Repository", 
-          href = "https://gitlab.nimbus.amgen.com/titan/Atlas-Shiny-Apps", 
+          href = repo_link, 
           target = "_blank")
-      )
+      ),
+      nav_item(a(
+        datasource, href = atlas_link, target = "_blank"
+      ))
     )
   )
 )

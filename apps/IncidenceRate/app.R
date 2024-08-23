@@ -7,13 +7,16 @@ library(tippy)
 library(bslib)
 
 source("read_data.R")
-# cohort_name <- readr::read_file(file.path("data", "cohort_name.txt"))
-datasource <- readr::read_lines(file.path("data", "datasource.txt"))
-app_data <- read_data(path = "data")
+
+data_dir <- "data"
+
+app_data <- read_data(path = data_dir)
+PROPERTIES <- properties::read.properties(file.path(data_dir, "app.properties"))
+repo_link <- PROPERTIES$repo_link
+atlas_link <- PROPERTIES$atlas_link
+incidence_rate_name <- PROPERTIES$analysis_name
+datasource <- PROPERTIES$datasource
 api_url <- "http://api.ohdsi.org:8080/WebAPI/"
-atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
-incidence_rate <- readr::read_lines(file.path("data", "incidence_rate_name.txt"))
-repo_link <- "https://gitlab.nimbus.amgen.com/titan/Atlas-Shiny-Apps"
 
 cohorts <- readr::read_csv(file.path("data", "cohorts.csv"))
 
@@ -89,7 +92,7 @@ ui <- fluidPage(
         "Git Repository", href = repo_link, target = "_blank"
       )),
       nav_item(a(
-        incidence_rate, href = atlas_link, target = "_blank"
+        incidence_rate_name, href = atlas_link, target = "_blank"
       ))
     )
   )

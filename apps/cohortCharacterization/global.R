@@ -7,8 +7,17 @@ library(st)
 library(ggplot2)
 library(bslib)
 
+
+data_dir <- "data"
+
 csv_files <-
   list.files("data", pattern = ".csv", full.names = T)
+
+PROPERTIES <- properties::read.properties(file.path(data_dir, "app.properties"))
+atlas_link <- PROPERTIES$atlas_link
+repo_link <- PROPERTIES$repo_link
+datasource <- PROPERTIES$datasource
+atlas_url <- PROPERTIES$atlas_url
 
 app_data <-
   purrr::map(
@@ -188,4 +197,3 @@ comparatorListNames <-
 cohortNames <-
   list("targetCohort" = targetListNames, "comparatorCohort" = comparatorListNames)
 
-atlas_link <- readr::read_lines(file.path("data", "atlas_link.txt"))
