@@ -35,12 +35,6 @@ ui <- fluidPage(
           type = "text/css",
           ".shiny-output-error { visibility: hidden; }",
           ".shiny-output-error:before { visibility: hidden; }"
-        ),
-        tags$a(
-          "Link to app code",
-          href = "https://github.com/OdyOSG/AtlasShinyExport",
-          target = "_blank",
-          style = "postition: absolute; bottom: 0; left 0;"
         )
       )
     ),
