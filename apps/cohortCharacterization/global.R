@@ -18,6 +18,7 @@ atlas_link <- PROPERTIES$atlas_link
 repo_link <- PROPERTIES$repo_link
 datasource <- PROPERTIES$datasource
 atlas_url <- PROPERTIES$atlas_url
+analysis_name <- PROPERTIES$analysis_name
 
 app_data <-
   purrr::map(

@@ -49,7 +49,7 @@ ui <- fluidPage(
           target = "_blank")
       ),
       nav_item(a(
-        datasource, href = atlas_link, target = "_blank"
+        analysis_name, href = atlas_link, target = "_blank"
       ))
     )
   )
