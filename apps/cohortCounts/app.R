@@ -5,9 +5,17 @@ library(reactable)
 library(bslib)
 library(tippy)
 library(ROhdsiWebApi)
+library(logger)
+
+log_layout(layout_glue_colors)
+log_level(INFO)
 
 
+log_info("Reading the data")
 source("read_data.R")
+
+
+log_info("Reading properties")
 data_dir <- "data"
 
 PROPERTIES <- properties::read.properties(file.path(data_dir, "app.properties"))
@@ -15,9 +23,8 @@ repo_link <- PROPERTIES$repo_link
 cohort_name <- PROPERTIES$cohort_name
 cohort_link <- PROPERTIES$cohort_link
 app_data <- read_data(path = data_dir)
-definition <- 
   
-  
+
   #  if (length(app_data[[1]]$event$inclusion_table$ID) < 1 |
   #    length(app_data[[1]]$person$inclusion_table$ID) < 1)
    # stop(paste("zero inclusion rules in the cohort!"))
@@ -171,8 +178,7 @@ server <- function(input, output) {
   
   # when a box on the treemap is clicked this reactive will store the associated IDs as numbers
   rows_to_highlight <- reactive({
-    if (!isTruthy(input$box_click$name) ||
-        input$box_click$name == "None")
+    if (!isTruthy(input$box_click$name) || input$box_click$name == "None")
       return(FALSE)
     as.numeric(stringr::str_split(input$box_click$name, ",")[[1]])
   })
@@ -195,13 +201,14 @@ server <- function(input, output) {
     }
   })
   
-  output$count_in_selected_subset_text <- renderPrint({
-    if (!isTruthy(input$box_click$name) ||
-        attritionView() == 1)
+  observe({
+    if (!isTruthy(input$box_click$name) || attritionView() == 1)
       return(HTML("<br>"))
-    req(input$box_click$name)
     
-    x <- app_data$SYNPUF_110k[[input$level]]$treemap_table %>%
+    req(input$box_click$name)
+    req(input$level)
+    
+    x <- app_data[[PROPERTIES$datasource]][[input$level]]$treemap_table %>%
       mutate(total = sum(value),
              percent = round(100 * value / total, 2)) %>%
       filter(name == input$box_click$name) %>%
@@ -210,15 +217,17 @@ server <- function(input, output) {
         percent = paste0(percent, "%")
       )
     
-    if (input$box_click$name == "None") {
-      glue::glue(
-        "Number of {input$level}s not matching any inclusion rules: {x$value} ({x$percent})"
-      )
-    } else {
-      glue::glue(
-        "Number of {input$level}s matching inclusion rules [{input$box_click$name}]: {x$value} ({x$percent})"
-      )
-    }
+    output$count_in_selected_subset_text <- renderPrint({
+      if (input$box_click$name == "None") {
+        glue::glue(
+          "Number of {input$level}s not matching any inclusion rules: {x$value} ({x$percent})"
+        )
+      } else {
+        glue::glue(
+          "Number of {input$level}s matching inclusion rules [{input$box_click$name}]: {x$value} ({x$percent})"
+        )
+      }
+    })
   })
   
   # output$summary_table <- gt::render_gt(
@@ -236,8 +245,8 @@ server <- function(input, output) {
           else
             list(color = "black")
         }
-        print(paste("nrow"))
-        print("---")
+        log_info(paste("nrow"))
+        log_info("---")
         #result <- tryCatch({
        #if(!is.na(app_data[[1]][[input$level]]$inclusion_table))
        # {
@@ -245,14 +254,14 @@ server <- function(input, output) {
          # {
            # if(app_data[[1]][[input$level]]$inclusion_table >= 0)
             #{
-              print(paste("inc_table"))
+              log_info(paste("inc_table"))
               inc_table <- app_data[[1]][[input$level]]$inclusion_table
-              print(paste("inc_table", inc_table))
+              log_info("inc_table: ", toString(inc_table))
               #defaultSelected <- seq_len(nrow(app_data$SYNPUF_110k[[input$level]]$inclusion_table))
               defaultSelected <- seq_len(nrow(inc_table))
-              print(paste("defaultSelected",defaultSelected))
+              log_info(paste("defaultSelected: ", toString(defaultSelected)))
               
-              print(paste("Value of defaultSelected : ",defaultSelected))
+              log_info(paste("Value of defaultSelected: ", toString(defaultSelected)))
               
               
               #app_data[[1]][[input$level]]$inclusion_table %>%
@@ -356,13 +365,13 @@ server <- function(input, output) {
         stop("There is a problem. attritionView should either be 1 or 0.")
       }
     }, error = function(e) {
-      print("No data found")
-      print(e$message)
+      log_info("No data found")
+      log_info(e$message)
     })
   })
   
   selected_rows <- reactive(getReactableState("inclusion_table", "selected"))
-  print("selected_rows :")
+  log_info("selected_rows:")
   
   # gt::gt() %>%
   # gt::fmt_number(columns = dplyr::matches("count"), decimals = 0) %>%
@@ -397,7 +406,7 @@ server <- function(input, output) {
       )
     
   })
-  print(paste("treemap_table :"))
+  log_info("treemap_table:")
   output$plot <- renderEcharts4r({
     if (attritionView() == 0) {
       shinyjs::runjs("Shiny.setInputValue('box_click', {name: false})")

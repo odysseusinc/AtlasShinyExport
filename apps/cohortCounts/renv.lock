@@ -109,19 +109,6 @@
       ],
       "Hash": "e1762de0f08b14658d74989c10e2f265"
     },
-    "V8": {
-      "Package": "V8",
-      "Version": "4.4.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "Rcpp",
-        "curl",
-        "jsonlite",
-        "utils"
-      ],
-      "Hash": "ca98390ad1cef2a5a609597b49d3d042"
-    },
     "anytime": {
       "Package": "anytime",
       "Version": "0.3.9",
@@ -164,16 +151,6 @@
       ],
       "Hash": "543776ae6848fde2f48ff3816d0628bc"
     },
-    "bigD": {
-      "Package": "bigD",
-      "Version": "0.2.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "93637e906f3fe962413912c956eb44db"
-    },
     "bit": {
       "Package": "bit",
       "Version": "4.0.5",
@@ -197,13 +174,6 @@
         "utils"
       ],
       "Hash": "9fe98599ca456d6552421db0d6772d8f"
-    },
-    "bitops": {
-      "Package": "bitops",
-      "Version": "1.0-7",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b7d8d8ee39869c18d8846a184dd8a1af"
     },
     "broom": {
       "Package": "broom",
@@ -498,46 +468,6 @@
       ],
       "Hash": "e0b3a53876554bd45879e596cdb10a52"
     },
-    "gt": {
-      "Package": "gt",
-      "Version": "0.10.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "base64enc",
-        "bigD",
-        "bitops",
-        "cli",
-        "commonmark",
-        "dplyr",
-        "fs",
-        "glue",
-        "htmltools",
-        "htmlwidgets",
-        "juicyjuice",
-        "magrittr",
-        "markdown",
-        "reactable",
-        "rlang",
-        "sass",
-        "scales",
-        "tidyselect",
-        "vctrs",
-        "xml2"
-      ],
-      "Hash": "03009c105dfae79460b8eb9d8cf791e4"
-    },
-    "here": {
-      "Package": "here",
-      "Version": "1.0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "rprojroot"
-      ],
-      "Hash": "24b224366f9c2e7534d2344d10d59211"
-    },
     "highr": {
       "Package": "highr",
       "Version": "0.11",
@@ -644,16 +574,6 @@
       ],
       "Hash": "e1b9c55281c5adc4dd113652d9e26768"
     },
-    "juicyjuice": {
-      "Package": "juicyjuice",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "V8"
-      ],
-      "Hash": "3bcd11943da509341838da9399e18bce"
-    },
     "knitr": {
       "Package": "knitr",
       "Version": "1.47",
@@ -705,6 +625,16 @@
       ],
       "Hash": "b8552d117e1b808b09a832f589b79035"
     },
+    "logger": {
+      "Package": "logger",
+      "Version": "0.3.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "utils"
+      ],
+      "Hash": "c145edf05cc128e6ffcfa5d872c46329"
+    },
     "lubridate": {
       "Package": "lubridate",
       "Version": "1.9.3",
@@ -727,19 +657,6 @@
         "R"
       ],
       "Hash": "7ce2733a9826b3aeb1775d56fd305472"
-    },
-    "markdown": {
-      "Package": "markdown",
-      "Version": "1.13",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "commonmark",
-        "utils",
-        "xfun"
-      ],
-      "Hash": "074efab766a9d6360865ad39512f2a7e"
     },
     "memoise": {
       "Package": "memoise",
@@ -1014,16 +931,6 @@
       ],
       "Hash": "27f9502e1cdbfa195f94e03b0f517484"
     },
-    "rprojroot": {
-      "Package": "rprojroot",
-      "Version": "2.0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "4c8415e0ec1e29f3f4f6fc108bef0144"
-    },
     "rsconnect": {
       "Package": "rsconnect",
       "Version": "1.3.1",
@@ -1151,21 +1058,6 @@
         "shiny"
       ],
       "Hash": "802e4786b353a4bb27116957558548d5"
-    },
-    "sigma": {
-      "Package": "sigma",
-      "Version": "1.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "jjallaire",
-      "RemoteRepo": "sigma",
-      "RemoteRef": "master",
-      "RemoteSha": "8ccdef493b203b6168029e5f824ef4834b917b97",
-      "Requirements": [
-        "htmlwidgets"
-      ],
-      "Hash": "168a6ddf141430441f64189337af16de"
     },
     "sourcetools": {
       "Package": "sourcetools",
@@ -1401,19 +1293,6 @@
         "tools"
       ],
       "Hash": "ca59c87fe305b16a9141a5874c3a7889"
-    },
-    "xml2": {
-      "Package": "xml2",
-      "Version": "1.3.6",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "cli",
-        "methods",
-        "rlang"
-      ],
-      "Hash": "1d0336142f4cd25d8d23cd3ba7a8fb61"
     },
     "xtable": {
       "Package": "xtable",

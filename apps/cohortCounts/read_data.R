@@ -4,6 +4,7 @@
 
 read_data <- function(path) {
   require(dplyr)
+  require(logger)
   
   # get the list of unique data source keys
   data_sources <- list.files(path, pattern = ".json$") %>% 
@@ -17,13 +18,13 @@ read_data <- function(path) {
     for (e in c("event", "person")) {
       
       file_path <- file.path(path, glue::glue("{d}_by_{e}.json"))
-      print(paste("File path", file_path))
+      logger::log_info(paste("File path", file_path))
       if (!file.exists(file_path)) stop(paste(file_path, "cannot be found!"))
       
       # if basecount for current file is > 0 then do logic else 'print no data found and put file_path' skip logic summary_table, inclusion_table, treemap_table
       
       x <- jsonlite::read_json(file_path, simplifyVector = FALSE)
-      print(paste("basecount",x$summary$baseCount ))
+      logger::log_info(paste("basecount",x$summary$baseCount ))
       
       if(x$summary$baseCount == 0)
       {
@@ -48,10 +49,10 @@ read_data <- function(path) {
           pct_remain = numeric(),
           pct_diff = numeric())
           
-          print("No Data ---")
+          logger::log_info("No Data ---")
           
       }else 
-      { print("Nonzero basecount") 
+      { logger::log_info("Nonzero basecount") 
         app_data[[d]][[e]][["summary_table"]] <- dplyr::tibble(
           initial_index_events = x$summary$baseCount,
           final_index_events = x$summary$finalCount,
@@ -87,7 +88,7 @@ read_data <- function(path) {
         
       }
     }
-    print("---")
+    logger::log_info("---")
     return(app_data)
   }
 }

@@ -220,37 +220,6 @@
         "Built": "R 4.3.0; ; 2024-05-31 04:41:06 UTC; unix"
       }
     },
-    "V8": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "V8",
-        "Type": "Package",
-        "Title": "Embedded JavaScript and WebAssembly Engine for R",
-        "Version": "4.4.2",
-        "Authors@R": "c(\n    person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), email = \"jeroen@berkeley.edu\",\n      comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"Jan Marvin\", \"Garbuszus\", role = \"ctb\"))",
-        "Description": "An R interface to V8 <https://v8.dev>: Google's open source JavaScript\n    and WebAssembly engine. This package can be compiled either with V8 version 6 \n    and up or NodeJS when built as a shared library.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://jeroen.r-universe.dev/V8",
-        "BugReports": "https://github.com/jeroen/v8/issues",
-        "SystemRequirements": "V8 engine version 6+ is needed for ES6 and WASM\nsupport. On Linux you can build against libv8-dev (Debian) or\nv8-devel (Fedora). We also provide static libv8 binaries for\nmost platforms, see the README for details.",
-        "NeedsCompilation": "yes",
-        "VignetteBuilder": "knitr",
-        "Imports": "Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils",
-        "LinkingTo": "Rcpp",
-        "Suggests": "testthat, knitr, rmarkdown",
-        "RoxygenNote": "7.2.3",
-        "Language": "en-US",
-        "Encoding": "UTF-8",
-        "Biarch": "true",
-        "Packaged": "2024-02-15 11:17:46 UTC; jeroen",
-        "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  Jan Marvin Garbuszus [ctb]",
-        "Maintainer": "Jeroen Ooms <jeroen@berkeley.edu>",
-        "Repository": "RSPM",
-        "Date/Publication": "2024-02-15 15:00:02 UTC",
-        "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-07-18 06:30:49 UTC; unix"
-      }
-    },
     "anytime": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -354,34 +323,6 @@
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:44:29 UTC; unix"
       }
     },
-    "bigD": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Type": "Package",
-        "Package": "bigD",
-        "Title": "Flexibly Format Dates and Times to a Given Locale",
-        "Version": "0.2.0",
-        "Authors@R": "person(\"Richard\", \"Iannone\", , \"riannone@me.com\", c(\"aut\", \"cre\"),\n                  comment = c(ORCID = \"0000-0003-3925-190X\"))",
-        "Description": "Format dates and times flexibly and to whichever locales\n    make sense. Parses dates, times, and date-times in various formats\n    (including string-based ISO 8601 constructions). The formatting syntax gives\n    the user many options for formatting the date and time output in a precise\n    manner. Time zones in the input can be expressed in multiple ways and there\n    are many options for formatting time zones in the output as well. Several of\n    the provided helper functions allow for automatic generation of locale-aware\n    formatting patterns based on date/time skeleton formats and standardized\n    date/time formats with varying specificity.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://github.com/rich-iannone/bigD",
-        "BugReports": "https://github.com/rich-iannone/bigD/issues",
-        "Depends": "R (>= 3.2.0)",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.2.1",
-        "Suggests": "covr, testthat (>= 3.0.0)",
-        "Config/testthat/edition": "3",
-        "Config/testthat/parallel": "true",
-        "NeedsCompilation": "no",
-        "Packaged": "2022-09-02 20:05:54 UTC; rich",
-        "Author": "Richard Iannone [aut, cre] (<https://orcid.org/0000-0003-3925-190X>)",
-        "Maintainer": "Richard Iannone <riannone@me.com>",
-        "Repository": "RSPM",
-        "Date/Publication": "2022-09-05 08:30:08 UTC",
-        "Built": "R 4.3.0; ; 2023-04-22 00:02:39 UTC; unix"
-      }
-    },
     "bit": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -436,28 +377,6 @@
         "NeedsCompilation": "yes",
         "Packaged": "2020-08-29 10:56:45 UTC; jo",
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:44:53 UTC; unix"
-      }
-    },
-    "bitops": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "bitops",
-        "Version": "1.0-7",
-        "Date": "2021-04-13",
-        "Author": "S original by Steve Dutky <sdutky@terpalum.umd.edu> initial R\n        port and extensions by Martin Maechler; revised and modified\n        by Steve Dutky",
-        "Maintainer": "Martin Maechler <maechler@stat.math.ethz.ch>",
-        "Title": "Bitwise Operations",
-        "Description": "Functions for bitwise operations on integer vectors.",
-        "License": "GPL (>= 2)",
-        "URL": "https://github.com/mmaechler/R-bitops",
-        "BugReports": "https://github.com/mmaechler/R-bitops/issues",
-        "NeedsCompilation": "yes",
-        "Packaged": "2021-04-13 20:50:22 UTC; maechler",
-        "Repository": "RSPM",
-        "Date/Publication": "2021-04-24 11:40:08 UTC",
-        "Encoding": "UTF-8",
-        "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:44:41 UTC; unix"
       }
     },
     "broom": {
@@ -1166,67 +1085,6 @@
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:45:27 UTC; unix"
       }
     },
-    "gt": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Type": "Package",
-        "Package": "gt",
-        "Version": "0.10.1",
-        "Title": "Easily Create Presentation-Ready Display Tables",
-        "Description": "Build display tables from tabular data with an easy-to-use set of\n    functions. With its progressive approach, we can construct display tables\n    with a cohesive set of table parts. Table values can be formatted using any\n    of the included formatting functions. Footnotes and cell styles can be \n    precisely added through a location targeting system. The way in which 'gt'\n    handles things for you means that you don't often have to worry about the\n    fine details.",
-        "Authors@R": "c(\n    person(\"Richard\", \"Iannone\", , \"rich@posit.co\", c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0003-3925-190X\")),\n    person(\"Joe\", \"Cheng\", , \"joe@posit.co\", \"aut\"),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Ellis\", \"Hughes\", , \"ellis.h.hughes@gsk.com\", \"aut\",\n           comment = c(ORCID = \"0000-0003-0637-4436\")),   \n    person(\"Alexandra\", \"Lauer\", , \"alexandralauer1@gmail.com\", \"aut\",\n           comment = c(ORCID = \"0000-0002-4191-6301\")),    \n    person(\"JooYoung\", \"Seo\", , \"jseo1005@illinois.edu\", \"aut\",\n           comment = c(ORCID = \"0000-0002-4064-6012\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n    )",
-        "License": "MIT + file LICENSE",
-        "URL": "https://gt.rstudio.com, https://github.com/rstudio/gt",
-        "BugReports": "https://github.com/rstudio/gt/issues",
-        "Encoding": "UTF-8",
-        "LazyData": "true",
-        "ByteCompile": "true",
-        "RoxygenNote": "7.2.3",
-        "Depends": "R (>= 3.2.0)",
-        "Imports": "base64enc (>= 0.1-3), bigD (>= 0.2), bitops (>= 1.0-7), cli\n(>= 3.6.0), commonmark (>= 1.8.1), dplyr (>= 1.1.0), fs (>=\n1.6.1), glue (>= 1.6.2), htmltools (>= 0.5.4), htmlwidgets (>=\n1.6.1), juicyjuice (>= 0.1.0), magrittr (>= 2.0.2), markdown\n(>= 1.5), reactable (>= 0.4.3), rlang (>= 1.0.2), sass (>=\n0.4.5), scales (>= 1.2.1), tidyselect (>= 1.2.0), vctrs, xml2\n(>= 1.3.3)",
-        "Suggests": "covr, digest (>= 0.6.31), fontawesome (>= 0.5.2), ggplot2,\nknitr, lubridate, magick, paletteer, RColorBrewer, rmarkdown\n(>= 2.20), rvest, shiny (>= 1.7.4), testthat (>= 3.1.9), tidyr,\nwebshot2 (>= 0.1.0)",
-        "Collate": "'as_data_frame.R' 'build_data.R' 'compile_scss.R'\n'data_color.R' 'datasets.R' 'dt__.R' 'dt_body.R' 'dt_boxhead.R'\n'dt_cols_merge.R' 'dt_data.R' 'dt_footnotes.R' 'dt_formats.R'\n'dt_groups_rows.R' 'dt_has_built.R' 'dt_heading.R'\n'dt_locale.R' 'dt_options.R' 'dt_row_groups.R'\n'dt_source_notes.R' 'dt_spanners.R' 'dt_stub_df.R'\n'dt_stubhead.R' 'dt_styles.R' 'dt_substitutions.R'\n'dt_summary.R' 'dt_transforms.R' 'export.R' 'format_data.R'\n'format_vec.R' 'gt-package.R' 'gt.R' 'gt_group.R'\n'gt_preview.R' 'gt_split.R' 'helpers.R' 'image.R'\n'info_tables.R' 'knitr-utils.R' 'location_methods.R'\n'modify_columns.R' 'modify_rows.R' 'tab_create_modify.R'\n'opts.R' 'print.R' 'reexports.R' 'render_as_html.R'\n'render_as_i_html.R' 'resolver.R' 'rows_add.R' 'shiny.R'\n'substitution.R' 'summary_rows.R' 'tab_info.R' 'tab_remove.R'\n'tab_style_body.R' 'text_transform.R' 'utils.R'\n'utils_color_contrast.R' 'utils_environments.R'\n'utils_examples.R' 'utils_formatters.R'\n'utils_general_str_formatting.R' 'utils_pipe.R' 'utils_plots.R'\n'utils_render_common.R' 'utils_render_html.R'\n'utils_render_latex.R' 'utils_render_rtf.R'\n'utils_render_xml.R' 'utils_units.R'\n'z_utils_render_footnotes.R' 'zzz.R'",
-        "Config/testthat/edition": "3",
-        "Config/testthat/parallel": "true",
-        "NeedsCompilation": "no",
-        "Packaged": "2024-01-17 22:09:40 UTC; rich",
-        "Author": "Richard Iannone [aut, cre] (<https://orcid.org/0000-0003-3925-190X>),\n  Joe Cheng [aut],\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Ellis Hughes [aut] (<https://orcid.org/0000-0003-0637-4436>),\n  Alexandra Lauer [aut] (<https://orcid.org/0000-0002-4191-6301>),\n  JooYoung Seo [aut] (<https://orcid.org/0000-0002-4064-6012>),\n  Posit Software, PBC [cph, fnd]",
-        "Maintainer": "Richard Iannone <rich@posit.co>",
-        "Repository": "RSPM",
-        "Date/Publication": "2024-01-17 23:50:05 UTC",
-        "Built": "R 4.3.0; ; 2024-01-18 11:20:17 UTC; unix"
-      }
-    },
-    "here": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "here",
-        "Title": "A Simpler Way to Find Your Files",
-        "Version": "1.0.1",
-        "Date": "2020-12-13",
-        "Authors@R": "\n    c(person(given = \"Kirill\",\n             family = \"M\\u00fcller\",\n             role = c(\"aut\", \"cre\"),\n             email = \"krlmlr+r@mailbox.org\",\n             comment = c(ORCID = \"0000-0002-1416-3412\")),\n      person(given = \"Jennifer\",\n             family = \"Bryan\",\n             role = \"ctb\",\n             email = \"jenny@rstudio.com\",\n             comment = c(ORCID = \"0000-0002-6983-2759\")))",
-        "Description": "Constructs paths to your project's files.\n    Declare the relative path of a file within your project with 'i_am()'.\n    Use the 'here()' function as a drop-in replacement for 'file.path()',\n    it will always locate the files relative to your project root.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://here.r-lib.org/, https://github.com/r-lib/here",
-        "BugReports": "https://github.com/r-lib/here/issues",
-        "Imports": "rprojroot (>= 2.0.2)",
-        "Suggests": "conflicted, covr, fs, knitr, palmerpenguins, plyr, readr,\nrlang, rmarkdown, testthat, uuid, withr",
-        "VignetteBuilder": "knitr",
-        "Encoding": "UTF-8",
-        "LazyData": "true",
-        "RoxygenNote": "7.1.1.9000",
-        "Config/testthat/edition": "3",
-        "NeedsCompilation": "no",
-        "Packaged": "2020-12-13 06:59:33 UTC; kirill",
-        "Author": "Kirill Müller [aut, cre] (<https://orcid.org/0000-0002-1416-3412>),\n  Jennifer Bryan [ctb] (<https://orcid.org/0000-0002-6983-2759>)",
-        "Maintainer": "Kirill Müller <krlmlr+r@mailbox.org>",
-        "Repository": "RSPM",
-        "Date/Publication": "2020-12-13 07:30:02 UTC",
-        "Built": "R 4.3.0; ; 2023-04-21 23:11:59 UTC; unix"
-      }
-    },
     "highr": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -1452,32 +1310,6 @@
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:44:28 UTC; unix"
       }
     },
-    "juicyjuice": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "juicyjuice",
-        "Title": "Inline CSS Properties into HTML Tags Using 'juice'",
-        "Version": "0.1.0",
-        "Authors@R": "c(\n    person(\"Richard\", \"Iannone\", , \"riannone@me.com\", c(\"aut\", \"cre\", \"cph\"),\n           comment = c(ORCID = \"0000-0003-3925-190X\")),\n    person(\"Automattic\", role = c(\"cph\"), comment = \"juice library\"),\n    person(\"juice contributors\", role = c(\"ctb\"), comment = \"juice library\")\n    )",
-        "Description": "There are occasions where you need a piece of HTML with integrated\n    styles. A prime example of this is HTML email. This transformation\n    involves moving the CSS and associated formatting instructions from the\n    style block in the head of your document into the body of the HTML. Many\n    prominent email clients require integrated styles in HTML email; otherwise a\n    received HTML email will be displayed without any styling. This package will\n    quickly and precisely perform these CSS transformations when given HTML text\n    and it does so by using the JavaScript 'juice' library.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://github.com/rich-iannone/juicyjuice",
-        "BugReports": "https://github.com/rich-iannone/juicyjuice/issues",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.2.1",
-        "Imports": "V8 (>= 4.2.0)",
-        "Suggests": "testthat (>= 3.0.0)",
-        "Config/testthat/edition": "3",
-        "NeedsCompilation": "no",
-        "Packaged": "2022-11-09 19:42:30 UTC; rich",
-        "Author": "Richard Iannone [aut, cre, cph]\n    (<https://orcid.org/0000-0003-3925-190X>),\n  Automattic [cph] (juice library),\n  juice contributors [ctb] (juice library)",
-        "Maintainer": "Richard Iannone <riannone@me.com>",
-        "Repository": "RSPM",
-        "Date/Publication": "2022-11-10 19:00:02 UTC",
-        "Built": "R 4.3.0; ; 2023-04-22 00:02:48 UTC; unix"
-      }
-    },
     "knitr": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -1588,6 +1420,36 @@
         "Built": "R 4.3.0; ; 2024-06-26 20:45:36 UTC; unix"
       }
     },
+    "logger": {
+      "Source": "CRAN",
+      "Repository": "https://packagemanager.posit.co/cran/latest",
+      "description": {
+        "Type": "Package",
+        "Package": "logger",
+        "Authors@R": "c(\n    person(\"Gergely\", \"Daróczi\", , \"daroczig@rapporter.net\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0003-3149-8537\")),\n    person(\"System1\", role = c(\"fnd\"))\n    )",
+        "Title": "A Lightweight, Modern and Flexible Logging Utility",
+        "Description": "Inspired by the the 'futile.logger' R package and 'logging' Python module, this utility provides a flexible and extensible way of formatting and delivering log messages with low overhead.",
+        "Version": "0.3.0",
+        "Date": "2024-03-03",
+        "URL": "https://daroczig.github.io/logger/",
+        "BugReports": "https://github.com/daroczig/logger/issues",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.1",
+        "License": "AGPL-3",
+        "Imports": "utils",
+        "Suggests": "glue, pander, jsonlite, crayon, slackr (>= 1.4.1),\nRPushbullet, telegram, testthat, covr, knitr, rmarkdown,\ndevtools, roxygen2, parallel, rsyslog, shiny, callr, txtq,\nbotor, R.utils, syslognet",
+        "Enhances": "logging, futile.logger, log4r",
+        "VignetteBuilder": "knitr",
+        "Config/testthat/edition": "2",
+        "NeedsCompilation": "no",
+        "Packaged": "2024-03-05 14:10:49 UTC; daroczig",
+        "Author": "Gergely Daróczi [aut, cre] (<https://orcid.org/0000-0003-3149-8537>),\n  System1 [fnd]",
+        "Maintainer": "Gergely Daróczi <daroczig@rapporter.net>",
+        "Repository": "RSPM",
+        "Date/Publication": "2024-03-05 16:20:02 UTC",
+        "Built": "R 4.3.0; ; 2024-03-06 12:26:05 UTC; unix"
+      }
+    },
     "lubridate": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -1649,33 +1511,6 @@
         "Repository": "RSPM",
         "Date/Publication": "2022-03-30 07:30:09 UTC",
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:44:43 UTC; unix"
-      }
-    },
-    "markdown": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "markdown",
-        "Type": "Package",
-        "Title": "Render Markdown with 'commonmark'",
-        "Version": "1.13",
-        "Authors@R": "c(\n   person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\")),\n   person(\"JJ\", \"Allaire\", role = \"aut\"),\n   person(\"Jeffrey\", \"Horner\", role = \"aut\"),\n   person(\"Henrik\", \"Bengtsson\", role = \"ctb\"),\n   person(\"Jim\", \"Hester\", role = \"ctb\"),\n   person(\"Yixuan\", \"Qiu\", role = \"ctb\"),\n   person(\"Kohske\", \"Takahashi\", role = \"ctb\"),\n   person(\"Adam\", \"November\", role = \"ctb\"),\n   person(\"Nacho\", \"Caballero\", role = \"ctb\"),\n   person(\"Jeroen\", \"Ooms\", role = \"ctb\"),\n   person(\"Thomas\", \"Leeper\", role = \"ctb\"),\n   person(\"Joe\", \"Cheng\", role = \"ctb\"),\n   person(\"Andrzej\", \"Oles\", role = \"ctb\"),\n   person(given = \"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n   )",
-        "Description": "Render Markdown to full and lightweight HTML/LaTeX documents with\n    the 'commonmark' package. This package has been superseded by 'litedown'.",
-        "Depends": "R (>= 2.11.1)",
-        "Imports": "utils, commonmark (>= 1.9.0), xfun (>= 0.38)",
-        "Suggests": "knitr, rmarkdown (>= 2.18), yaml, RCurl",
-        "License": "MIT + file LICENSE",
-        "URL": "https://github.com/rstudio/markdown",
-        "BugReports": "https://github.com/rstudio/markdown/issues",
-        "RoxygenNote": "7.3.1",
-        "Encoding": "UTF-8",
-        "NeedsCompilation": "no",
-        "Packaged": "2024-06-04 15:36:56 UTC; yihui",
-        "Author": "Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>),\n  JJ Allaire [aut],\n  Jeffrey Horner [aut],\n  Henrik Bengtsson [ctb],\n  Jim Hester [ctb],\n  Yixuan Qiu [ctb],\n  Kohske Takahashi [ctb],\n  Adam November [ctb],\n  Nacho Caballero [ctb],\n  Jeroen Ooms [ctb],\n  Thomas Leeper [ctb],\n  Joe Cheng [ctb],\n  Andrzej Oles [ctb],\n  Posit Software, PBC [cph, fnd]",
-        "Maintainer": "Yihui Xie <xie@yihui.name>",
-        "Repository": "RSPM",
-        "Date/Publication": "2024-06-04 20:50:02 UTC",
-        "Built": "R 4.3.0; ; 2024-06-05 11:55:27 UTC; unix"
       }
     },
     "memoise": {
@@ -2275,33 +2110,6 @@
         "Built": "R 4.3.0; ; 2024-06-26 20:49:08 UTC; unix"
       }
     },
-    "rprojroot": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "rprojroot",
-        "Title": "Finding Files in Project Subdirectories",
-        "Version": "2.0.4",
-        "Authors@R": "\n    person(given = \"Kirill\",\n           family = \"M\\u00fcller\",\n           role = c(\"aut\", \"cre\"),\n           email = \"kirill@cynkra.com\",\n           comment = c(ORCID = \"0000-0002-1416-3412\"))",
-        "Description": "Robust, reliable and flexible paths to files below\n    a project root. The 'root' of a project is defined as a directory that\n    matches a certain criterion, e.g., it contains a certain regular file.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://rprojroot.r-lib.org/, https://github.com/r-lib/rprojroot",
-        "BugReports": "https://github.com/r-lib/rprojroot/issues",
-        "Depends": "R (>= 3.0.0)",
-        "Suggests": "covr, knitr, lifecycle, mockr, rlang, rmarkdown, testthat (>=\n3.0.0), withr",
-        "VignetteBuilder": "knitr",
-        "Config/testthat/edition": "3",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.2.3",
-        "NeedsCompilation": "no",
-        "Packaged": "2023-11-05 06:47:23 UTC; kirill",
-        "Author": "Kirill Müller [aut, cre] (<https://orcid.org/0000-0002-1416-3412>)",
-        "Maintainer": "Kirill Müller <kirill@cynkra.com>",
-        "Repository": "RSPM",
-        "Date/Publication": "2023-11-05 10:20:02 UTC",
-        "Built": "R 4.3.0; ; 2024-06-26 20:44:57 UTC; unix"
-      }
-    },
     "rsconnect": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -2499,34 +2307,6 @@
         "Repository": "RSPM",
         "Date/Publication": "2021-12-23 10:10:02 UTC",
         "Built": "R 4.3.0; ; 2023-04-21 22:20:41 UTC; unix"
-      }
-    },
-    "sigma": {
-      "Source": "github",
-      "Repository": null,
-      "description": {
-        "Package": "sigma",
-        "Type": "Package",
-        "Title": "Interface to sigma.js Graph Visualization Library",
-        "Version": "1.0",
-        "Date": "2014-12-05",
-        "Author": "Alexis Jacomy and JJ Allaire",
-        "Maintainer": "JJ Allaire <jj@rstudio.com>",
-        "Description": "Interface to sigma.js Network Visualization Library",
-        "License": "MIT + file LICENSE",
-        "Imports": "htmlwidgets (>= 0.3)",
-        "Built": "R 4.3.2; ; 2024-08-07 12:47:43 UTC; unix",
-        "RemoteType": "github",
-        "RemoteHost": "api.github.com",
-        "RemoteUsername": "jjallaire",
-        "RemoteRepo": "sigma",
-        "RemoteRef": "master",
-        "RemoteSha": "8ccdef493b203b6168029e5f824ef4834b917b97",
-        "GithubHost": "api.github.com",
-        "GithubRepo": "sigma",
-        "GithubUsername": "jjallaire",
-        "GithubRef": "master",
-        "GithubSHA1": "8ccdef493b203b6168029e5f824ef4834b917b97"
       }
     },
     "sourcetools": {
@@ -3015,37 +2795,6 @@
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:44:11 UTC; unix"
       }
     },
-    "xml2": {
-      "Source": "CRAN",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "description": {
-        "Package": "xml2",
-        "Title": "Parse XML",
-        "Version": "1.3.6",
-        "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Jeroen\", \"Ooms\", role = \"aut\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")),\n    person(\"R Foundation\", role = \"ctb\",\n           comment = \"Copy of R-project homepage cached as example\")\n  )",
-        "Description": "Work with XML files using a simple, consistent interface.\n    Built on top of the 'libxml2' C library.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://xml2.r-lib.org/, https://github.com/r-lib/xml2",
-        "BugReports": "https://github.com/r-lib/xml2/issues",
-        "Depends": "R (>= 3.6.0)",
-        "Imports": "cli, methods, rlang (>= 1.1.0)",
-        "Suggests": "covr, curl, httr, knitr, magrittr, mockery, rmarkdown,\ntestthat (>= 3.0.0)",
-        "VignetteBuilder": "knitr",
-        "Config/Needs/website": "tidyverse/tidytemplate",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.2.3",
-        "SystemRequirements": "libxml2: libxml2-dev (deb), libxml2-devel (rpm)",
-        "Collate": "'S4.R' 'as_list.R' 'xml_parse.R' 'as_xml_document.R'\n'classes.R' 'format.R' 'import-standalone-obj-type.R'\n'import-standalone-purrr.R' 'import-standalone-types-check.R'\n'init.R' 'nodeset_apply.R' 'paths.R' 'utils.R' 'xml2-package.R'\n'xml_attr.R' 'xml_children.R' 'xml_document.R' 'xml_find.R'\n'xml_missing.R' 'xml_modify.R' 'xml_name.R' 'xml_namespaces.R'\n'xml_node.R' 'xml_nodeset.R' 'xml_path.R' 'xml_schema.R'\n'xml_serialize.R' 'xml_structure.R' 'xml_text.R' 'xml_type.R'\n'xml_url.R' 'xml_write.R' 'zzz.R'",
-        "Config/testthat/edition": "3",
-        "NeedsCompilation": "yes",
-        "Packaged": "2023-12-04 14:50:27 UTC; hadleywickham",
-        "Author": "Hadley Wickham [aut, cre],\n  Jim Hester [aut],\n  Jeroen Ooms [aut],\n  Posit Software, PBC [cph, fnd],\n  R Foundation [ctb] (Copy of R-project homepage cached as example)",
-        "Maintainer": "Hadley Wickham <hadley@posit.co>",
-        "Repository": "RSPM",
-        "Date/Publication": "2023-12-04 16:30:02 UTC",
-        "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2024-06-26 20:45:22 UTC; unix"
-      }
-    },
     "xtable": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.posit.co/cran/latest",
@@ -3125,25 +2874,25 @@
   },
   "files": {
     ".RData": {
-      "checksum": "b93bc77cbc894690c0caedb3194939db"
+      "checksum": "7556d22cbfa347f9dbf5ddfd9a843968"
+    },
+    ".renvignore": {
+      "checksum": "989dd0740007f144b21dd5d7d8ddabac"
     },
     ".Rprofile": {
-      "checksum": "9fabc198d827807a4750fa1e6828a3ae"
+      "checksum": "8a3190c0bdd5cd92c734d56055c0d02b"
+    },
+    "app_data.RDS": {
+      "checksum": "514bd8679f6eb8d4390b2cd9fcd76b93"
     },
     "app.properties": {
       "checksum": "16460d147cdf2656abb0678e1123844c"
     },
     "app.R": {
-      "checksum": "fa08a48b49796686706de3cbef304df2"
+      "checksum": "6a2ab8dfa1c92804704d58d68eb0a954"
     },
     "data/app.properties": {
-      "checksum": "16460d147cdf2656abb0678e1123844c"
-    },
-    "data/cohort_link.txt": {
-      "checksum": "d9e721cb546c3c48791864865587baea"
-    },
-    "data/cohort_name.txt": {
-      "checksum": "b68c0072cd07c467e49acae4930b4b84"
+      "checksum": "882f747f0c87f50e56fa07c6d5a2b599"
     },
     "data/SYNPUF_110k_by_event.json": {
       "checksum": "f5ee2ff5879493213af9318a998bf8ff"
@@ -3170,10 +2919,10 @@
       "checksum": "ea7171a4f01203aeb3d6c4316fb07ac6"
     },
     "read_data.R": {
-      "checksum": "f6a1d216a112b553f051216948cd0f11"
+      "checksum": "41c961836f5c65f3420e6906b16f37c8"
     },
     "renv.lock": {
-      "checksum": "71376e80b3658843fb10623689e17662"
+      "checksum": "c8e269f5d36216f4637afb0c29c60b37"
     },
     "scratch/app2.R": {
       "checksum": "ce2c15b91f59c38d46c9a3c4194cc40b"
